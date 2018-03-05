@@ -1,0 +1,244 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>9. Installation and Use &mdash; AUnit Cookbook 2017 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2017',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="AUnit Cookbook 2017 documentation" href="../aunit_cb.html" />
+    <link rel="next" title="10. GPS Support" href="gps_support.html" />
+    <link rel="prev" title="8. Using AUnit with Restricted Run-Time Libraries" href="using_aunit_with_restricted_run-time_libraries.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="gps_support.html" title="10. GPS Support"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="using_aunit_with_restricted_run-time_libraries.html" title="8. Using AUnit with Restricted Run-Time Libraries"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../aunit_cb.html">AUnit Cookbook 2017 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../aunit_cb.html">
+              <img class="logo" src="../_static/adacore_transparent.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../aunit_cb.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">9. Installation and Use</a><ul>
+<li><a class="reference internal" href="#note-on-gprbuild">9.1. Note on gprbuild</a></li>
+<li><a class="reference internal" href="#support-for-other-platforms-run-times">9.2. Support for other platforms/run-times</a></li>
+<li><a class="reference internal" href="#installing-aunit">9.3. Installing AUnit</a></li>
+<li><a class="reference internal" href="#installed-files">9.4. Installed files</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="using_aunit_with_restricted_run-time_libraries.html"
+                        title="previous chapter">8. Using AUnit with Restricted Run-Time Libraries</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="gps_support.html"
+                        title="next chapter">10. GPS Support</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/aunit_cb/installation_and_use.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="installation-and-use">
+<span id="id1"></span><h1>9. Installation and Use<a class="headerlink" href="#installation-and-use" title="Permalink to this headline">¶</a></h1>
+<p id="index-0">AUnit 3 contains support for restricted runtimes such as the zero-foot-print
+(ZFP) and certified (cert) profiles. It can now be installed simultaneously
+for several targets and runtimes.</p>
+<div class="section" id="note-on-gprbuild">
+<span id="id2"></span><h2>9.1. Note on gprbuild<a class="headerlink" href="#note-on-gprbuild" title="Permalink to this headline">¶</a></h2>
+<p id="index-1">In order to compile, install and use AUnit, you need <cite>gprbuild</cite> and <cite>gprinstall</cite>
+version 2.2.0 or above.</p>
+</div>
+<div class="section" id="support-for-other-platforms-run-times">
+<span id="id3"></span><h2>9.2. Support for other platforms/run-times<a class="headerlink" href="#support-for-other-platforms-run-times" title="Permalink to this headline">¶</a></h2>
+<p>AUnit should be built and installed separately for each target and runtime
+it is meant to be used with. The necessary customizations are performed at
+AUnit build time, so once the framework is installed, it is always referenced
+simply by adding the line</p>
+<div class="highlight-python"><div class="highlight"><pre>with &quot;aunit&quot;;
+</pre></div>
+</div>
+<p>to your project.</p>
+</div>
+<div class="section" id="installing-aunit">
+<span id="id4"></span><h2>9.3. Installing AUnit<a class="headerlink" href="#installing-aunit" title="Permalink to this headline">¶</a></h2>
+<p>Normally AUnit comes preinstalled and ready-to-use for all runtimes in
+your GNAT distribution. The following instructions are for rebuilding it from
+sources for a custom configuration that the user may have.</p>
+<ul>
+<li><p class="first">Extract the archive:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ gunzip -dc aunit-&lt;version&gt;-src.tgz | tar xf -
+</pre></div>
+</div>
+</li>
+<li><p class="first">To build AUnit for a full Ada run-time:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ cd aunit-&lt;version&gt;-src
+$ make
+</pre></div>
+</div>
+</li>
+</ul>
+<ul id="index-2">
+<li><p class="first">To build AUnit for a ZFP run-time targeting powerpc-elf platform:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ cd aunit-&lt;version&gt;-src
+$ make TARGET=powerpc-elf RTS=zfp
+</pre></div>
+</div>
+</li>
+<li><p class="first">To build AUnit for a reconfigurable runtime zfp-leon3 targeting leon3-elf
+platform:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ cd aunit-&lt;version&gt;-src
+$ make TARGET=leon3-elf RTS=zfp RTS_CONF=&quot;--RTS=zfp-leon3&quot;
+</pre></div>
+</div>
+</li>
+</ul>
+<p>Once the above build procedure has been performed for the desired platform, you
+can install AUnit:</p>
+<blockquote>
+<div><div class="highlight-python"><div class="highlight"><pre>$ make install INSTALL=&lt;install-root&gt;
+</pre></div>
+</div>
+</div></blockquote>
+<p id="index-3">We recommend that you install AUnit into the standard location used by <cite>gprbuild</cite>
+to find the libraries for a given configuration. For example for the case above
+(runtime <cite>zfp-leon3</cite> targeting <cite>leon3-elf</cite>), the default location is
+<code class="samp docutils literal"><em><span class="pre">&lt;gnat-root&gt;</span></em><span class="pre">/leon3-elf/zfp-leon3</span></code>. If the runtime is located in a custom
+directory and specified by the full path, using this exact path also as
+<em>&lt;install_root&gt;</em> is a sensible choice.</p>
+<p>If <code class="docutils literal"><span class="pre">INSTALL</span></code> is not specified, then AUnit will use the root directory where
+<cite>gprbuild</cite> is installed.</p>
+<ul>
+<li><p class="first">Specific installation:</p>
+<p>The AUnit makefile supports some specific options, activated using
+environment variables. The following options are defined:</p>
+<ul class="simple" id="index-4">
+<li><code class="docutils literal"><span class="pre">INSTALL</span></code>: defines the AUnit base installation directory, set to
+gprbuild&#8217;s base installation directory as found in the <code class="docutils literal"><span class="pre">PATH</span></code>.</li>
+</ul>
+<ul class="simple" id="index-5">
+<li><code class="docutils literal"><span class="pre">TARGET</span></code>: defines the gnat tools prefix to use. For example, to compile
+AUnit for powerpc VxWorks, <code class="docutils literal"><span class="pre">TARGET</span></code> should be set to <code class="docutils literal"><span class="pre">powerpc-wrs-vxworks</span></code>. If not
+set, the native compiler will be used.</li>
+</ul>
+<ul class="simple" id="index-6">
+<li><code class="docutils literal"><span class="pre">RTS</span></code>:  defines both the run-time used to compile AUnit and the value
+given to the AUnit project as <code class="docutils literal"><span class="pre">RUNTIME</span></code> scenario variable.</li>
+</ul>
+<ul class="simple" id="index-7">
+<li><code class="docutils literal"><span class="pre">RTS_CONF</span></code>: defines the <cite>gprbuild</cite> Runtime config flag. The value is
+set to <code class="docutils literal"><span class="pre">--RTS=$(RTS)</span></code> by default. Can be used when compiling AUnit for a
+configurable run-time.</li>
+</ul>
+</li>
+<li><p class="first">To test AUnit:</p>
+<p>The AUnit test suite is in the test subdirectory of the source package.</p>
+<div class="highlight-python"><div class="highlight"><pre>$ cd test
+$ make
+</pre></div>
+</div>
+<p>The test suite&#8217;s makefile supports the following variables:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">RTS</span></code></li>
+<li><code class="docutils literal"><span class="pre">TARGET</span></code></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="installed-files">
+<span id="id5"></span><h2>9.4. Installed files<a class="headerlink" href="#installed-files" title="Permalink to this headline">¶</a></h2>
+<p>The AUnit library is installed in the specified directory (<em>&lt;aunit-root&gt;</em>
+identifies the root installation directory as specified during the installation
+procedures above):</p>
+<ul class="simple" id="index-8">
+<li>the <code class="file docutils literal"><span class="pre">aunit.gpr</span></code> project is installed in <code class="samp docutils literal"><em><span class="pre">&lt;aunit-root&gt;</span></em><span class="pre">/lib/gnat</span></code></li>
+<li>the AUnit source files are installed in <code class="samp docutils literal"><em><span class="pre">&lt;aunit-root&gt;</span></em><span class="pre">/include/aunit</span></code></li>
+<li>the AUnit library files are installed in <code class="samp docutils literal"><em><span class="pre">&lt;aunit-root&gt;</span></em><span class="pre">/lib/aunit</span></code></li>
+<li>the AUnit documentation is installed in <code class="samp docutils literal"><em><span class="pre">&lt;aunit-root&gt;</span></em><span class="pre">/share/doc/aunit</span></code></li>
+<li>the AUnit examples are installed in <code class="samp docutils literal"><em><span class="pre">&lt;aunit-root&gt;</span></em><span class="pre">/share/examples/aunit</span></code></li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="gps_support.html" title="10. GPS Support"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="using_aunit_with_restricted_run-time_libraries.html" title="8. Using AUnit with Restricted Run-Time Libraries"
+             >previous</a> |</li>
+        <li><a href="../aunit_cb.html">AUnit Cookbook 2017 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2008-2017, AdaCore.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>8. Using AUnit with Restricted Run-Time Libraries &mdash; AUnit Cookbook 2017 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2017',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="AUnit Cookbook 2017 documentation" href="../aunit_cb.html" />
+    <link rel="next" title="9. Installation and Use" href="installation_and_use.html" />
+    <link rel="prev" title="7. Test Organization" href="test_organization.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="installation_and_use.html" title="9. Installation and Use"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="test_organization.html" title="7. Test Organization"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../aunit_cb.html">AUnit Cookbook 2017 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../aunit_cb.html">
+              <img class="logo" src="../_static/adacore_transparent.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="test_organization.html"
+                        title="previous chapter">7. Test Organization</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="installation_and_use.html"
+                        title="next chapter">9. Installation and Use</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/aunit_cb/using_aunit_with_restricted_run-time_libraries.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="using-aunit-with-restricted-run-time-libraries">
+<span id="id1"></span><h1>8. Using AUnit with Restricted Run-Time Libraries<a class="headerlink" href="#using-aunit-with-restricted-run-time-libraries" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="index-0"></span><span class="target" id="index-1"></span><p id="index-2">AUnit&nbsp;3 - like AUnit&nbsp;2 - is designed so that it can be used in
+environments with restricted Ada run-time libraries, such as ZFP and the cert
+run-time profile on Wind River&#8217;s VxWorks 653.  The patterns given in
+this document for writing tests, suites and harnesses are not the only
+patterns that can be used with AUnit, but they are compatible with the
+restricted run-time libraries provided with GNAT Pro.</p>
+<p id="index-3">In general, dynamic allocation and deallocation must be used carefully in test
+code.  For the cert profile on VxWorks 653, all dynamic allocation must be
+done prior to setting the application partition into &#8216;normal&#8217; mode.
+Deallocation is prohibited in this profile. For the default ZFP profile,
+dynamic memory management is not provided as part of the run-time, as it is
+not available on a bare board environment, and should not be used unless
+you have provided implementations as described in the GNAT User&#8217;s Guide
+Supplement for GNAT Pro Safety-Critical and GNAT Pro High-Security.</p>
+<p>Starting with AUnit&nbsp;3, a simple memory management mechanism has been
+included in the framework, using a kind of storage pool. This memory
+management mechanism uses a static array allocated at startup, and simulates
+dynamic allocation afterwards by allocating parts of this array upon request.
+Deallocation is not permitted.</p>
+<p>By default, the allocated array is a 100 KB array. This value can be changed
+by modifying its size in the file
+<code class="samp docutils literal"><span class="pre">aunit-</span><em><span class="pre">&lt;version&gt;</span></em><span class="pre">-src/aunit/framework/staticmemory/aunit-memory.adb</span></code>.</p>
+<p id="index-4">To allocate a new object, you use <code class="docutils literal"><span class="pre">AUnit.Memory.Utils.Gen_Alloc</span></code>.</p>
+<p>Additional restrictions relevant to the default ZFP profile include:</p>
+<span class="target" id="index-5"></span><ul id="index-6">
+<li><p class="first">Normally the ZFP profile requires a user-defined
+<code class="docutils literal"><span class="pre">__gnat_last_chance_handler</span></code> routine
+to handle raised exceptions. However, AUnit now provides a mechanism to
+simulate exception propagation using gcc builtin <span class="target" id="index-7"></span>setjmp/longjmp mechanism.
+This mechanism defines the <code class="docutils literal"><span class="pre">__gnat_last_chance_handler</span></code> routine, so it
+should not be redefined elsewhere. In order to be compatible with this
+restriction, the user-defined last chance handler routine can be defined as a
+&#8220;weak&#8221; symbol; this way, it will still be linked into the standalone executable,
+but will be replaced by the AUnit implementation when linked with the harness.
+The pragma <code class="docutils literal"><span class="pre">Weak_External</span></code> can be used for that; e.g.:</p>
+<div class="highlight-ada"><div class="highlight"><pre><span class="kr">pragma</span><span class="p"> </span><span class="n">Weak_External</span> <span class="o">(</span><span class="n">Last_Chance_Handler</span><span class="o">)</span><span class="p">;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<span class="target" id="index-8"></span><ul class="simple" id="index-9">
+<li>AUnit requires <code class="docutils literal"><span class="pre">GNAT.IO</span></code> provided in <code class="samp docutils literal"><span class="pre">g-io.ad</span><em><span class="pre">?</span></em></code> in the full or cert
+profile run-time library sources (or as implemented by the user). Since this
+is a run-time library unit it must be compiled with the gnatmake <code class="xref std std-option docutils literal"><span class="pre">-a</span></code>
+switch.</li>
+</ul>
+<ul class="simple" id="index-10">
+<li>The AUnit framework has been modified so that no call to the secondary
+stack is performed, nor any call to <code class="docutils literal"><span class="pre">memcpy</span></code> or <code class="docutils literal"><span class="pre">memset</span></code>. However, if the unit
+under test, or the tests themselves require use of those routines, then the
+application or test framework must define those symbols and provide the
+requisite implementations.</li>
+</ul>
+<span class="target" id="index-11"></span><ul class="simple" id="index-12">
+<li>The timed parameter of the Harness <code class="docutils literal"><span class="pre">Run</span></code> routine has no effect when used
+with the ZFP profile, and on profiles not supporting <code class="docutils literal"><span class="pre">Ada.Calendar</span></code>.</li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="installation_and_use.html" title="9. Installation and Use"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="test_organization.html" title="7. Test Organization"
+             >previous</a> |</li>
+        <li><a href="../aunit_cb.html">AUnit Cookbook 2017 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2008-2017, AdaCore.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
+    </div>
+  </body>
+</html>

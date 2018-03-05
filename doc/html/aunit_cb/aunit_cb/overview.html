@@ -1,0 +1,266 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>2. Overview &mdash; AUnit Cookbook 2017 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2017',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="AUnit Cookbook 2017 documentation" href="../aunit_cb.html" />
+    <link rel="next" title="3. Test Case" href="test_case.html" />
+    <link rel="prev" title="1. Introduction" href="introduction.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="test_case.html" title="3. Test Case"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="introduction.html" title="1. Introduction"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../aunit_cb.html">AUnit Cookbook 2017 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../aunit_cb.html">
+              <img class="logo" src="../_static/adacore_transparent.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="introduction.html"
+                        title="previous chapter">1. Introduction</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="test_case.html"
+                        title="next chapter">3. Test Case</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/aunit_cb/overview.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="overview">
+<span id="id1"></span><h1>2. Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h1>
+<p>How do you write testing code?</p>
+<p>The simplest approach is as an expression in a debugger. You can change
+debug expressions without recompiling, and you can wait to decide
+what to write until you have seen the running objects. You can also
+write test expressions as statements that print to the standard
+output stream. Both styles of tests are limited because they require
+human judgment to analyze their results. Also, they don&#8217;t compose
+nicely - you can only execute one debug expression at a time and a
+program with too many print statements causes the dreaded &#8220;Scroll
+Blindness&#8221;.</p>
+<p>AUnit tests do not require human judgment to interpret, and it is
+easy to run many of them at the same time. When you need to test
+something, here is what you do:</p>
+<span class="target" id="index-0"></span><span class="target" id="index-1"></span><ul id="index-2">
+<li><p class="first">Derive a test case type from <code class="docutils literal"><span class="pre">AUnit.Simple_Test_Cases.Test_Case</span></code>.</p>
+<p>Several test case types are available:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">AUnit.Simple_Test_Cases.Test_Case</span></code>: the base type for all test
+cases. Needs overriding of <code class="docutils literal"><span class="pre">Name</span></code> and <code class="docutils literal"><span class="pre">Run_Test</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">AUnit.Test_Cases.Test_Case</span></code>: the traditional AUnit test case type,
+allowing multiple test routines to be registered, where each one is run
+and reported independently.</li>
+<li><code class="docutils literal"><span class="pre">AUnit.Test_Fixtures.Test_Fixture</span></code>: used together with
+<code class="docutils literal"><span class="pre">AUnit.Test_Caller</span></code>, this allows easy creation of test suites comprising
+several test cases that share the same fixture (see <a class="reference internal" href="fixture.html#fixture"><em>Fixture</em></a>).</li>
+</ul>
+<p>See <a class="reference internal" href="test_case.html#test-case"><em>Test Case</em></a> for simple examples of using these types.</p>
+</li>
+<li><p class="first">When you want to check a value <a class="footnote-reference" href="#id4" id="id2">[1]</a> use one of the following Assert <a class="footnote-reference" href="#id5" id="id3">[2]</a> methods:</p>
+<table class="docutils footnote" frame="void" id="id4" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id2">[1]</a></td><td><p class="first last">While <span class="target" id="index-3"></span>JUnit and some other
+members of the xUnit family of unit test frameworks provide specialized forms
+of assertions (e.g. <cite>assertEqual</cite>), we took a design decision in AUnit
+not to provide such forms.  Ada has a much richer type system giving a
+large number of possible scalar types, and leading to an explosion of possible
+special forms of assert routines.  This is exacerbated by the lack of a single
+root type for most types, as is found in Java.  With the introduction of
+AUnit&nbsp;2 for use with restricted run-time profiles, where even <code class="docutils literal"><span class="pre">'Image</span></code> is
+missing, providing a comprehensive set of special assert routines in the
+framework itself becomes even more unrealistic. Since AUnit is intended to
+be an extensible toolkit, users can certainly write their own custom
+collection of such assert routines to suit local usage.</p>
+</td></tr>
+</tbody>
+</table>
+<span class="target" id="index-4"></span><table class="docutils footnote" frame="void" id="id5" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id3">[2]</a></td><td><p class="first last">Note that in AUnit&nbsp;3, and contrary to
+AUnit&nbsp;2, the procedural form of <cite>Assert</cite> has the same behavior whatever
+the underlying Ada run-time library: a failed assertion will cause the
+execution of the calling test routine to be abandoned. The functional form of
+<cite>Assert</cite> always continues on a failed assertion, and provides you
+with a choice of behaviors.</p>
+</td></tr>
+</tbody>
+</table>
+<div class="highlight-ada" id="index-5"><div class="highlight"><pre><span class="n">AUnit.Assertions.Assert</span> <span class="o">(</span><span class="n">Boolean_Expression</span><span class="p">,</span> <span class="n">String_Description</span><span class="o">)</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>or:</p>
+<div class="highlight-ada"><div class="highlight"><pre><span class="kr">if</span><span class="p"> </span><span class="kr">not</span><span class="p"> </span><span class="n">AUnit.Assertions.Assert</span> <span class="o">(</span><span class="n">Boolean_Expression</span><span class="p">,</span> <span class="n">String_Description</span><span class="o">)</span> <span class="kr">then</span><span class="p"></span>
+  <span class="kr">return</span><span class="p">;</span>
+<span class="k">end if</span><span class="p">;</span>
+</pre></div>
+</div>
+<p id="index-6">If you need to test that a subprogram raises an expected exception, there
+is the procedure <code class="docutils literal"><span class="pre">Assert_Exception</span></code> that takes an access value designating the procedure
+to be tested as a parameter:</p>
+<div class="highlight-ada"><div class="highlight"><pre><span class="kr">type</span><span class="p"> </span><span class="n">Throwing_Exception_Proc</span> <span class="kr">is</span><span class="p"> </span><span class="kr">access</span><span class="p"> </span><span class="kr">procedure</span><span class="p">;</span>
+
+<span class="k">procedure </span><span class="nf">Assert_Exception</span>
+<span class="o">(</span><span class="n">Proc</span>    <span class="o">:</span> <span class="n">Throwing_Exception_Proc</span><span class="p">;</span>
+<span class="n">Message</span> <span class="o">:</span> <span class="n">String</span><span class="p">;</span>
+<span class="n">Source</span>  <span class="o">:</span> <span class="n">String</span> <span class="o">:=</span> <span class="n">GNAT.Source_Info.File</span><span class="p">;</span>
+<span class="n">Line</span>    <span class="o">:</span> <span class="n">Natural</span> <span class="o">:=</span> <span class="n">GNAT.Source_Info.Line</span><span class="o">)</span><span class="p">;</span>
+<span class="c">--  Test that Proc throws an exception and record &quot;Message&quot; if not.</span>
+</pre></div>
+</div>
+<p>Example:</p>
+<div class="highlight-ada"><div class="highlight"><pre><span class="c">-- Declared at library level:</span>
+<span class="k">procedure </span><span class="nf">Test_Raising_Exception</span> <span class="kr">is</span><span class="p"></span>
+<span class="kr">begin</span><span class="p"></span>
+  <span class="n">call_to_the_tested_method</span> <span class="o">(</span><span class="n">some_args</span><span class="o">)</span><span class="p">;</span>
+<span class="k">end </span><span class="nf">Test_Raising_Exception</span><span class="p">;</span>
+
+<span class="c">-- In test routine:</span>
+<span class="k">procedure </span><span class="nf">My_Routine</span> <span class="o">(...)</span> <span class="kr">is</span><span class="p"></span>
+<span class="kr">begin</span><span class="p"></span>
+  <span class="n">Assert_Exception</span> <span class="o">(</span><span class="n">Test_Raising_Exception</span><span class="na">&#39;Access</span><span class="p">,</span> <span class="o">**</span><span class="n">String_Description</span><span class="o">**)</span><span class="p">;</span>
+<span class="k">end </span><span class="nf">My_Routine</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>This procedure can handle exceptions with all run-time profiles (including
+zfp).  If you are using a run-time library capable of propagating exceptions,
+you can use the following idiom instead:</p>
+<div class="highlight-ada"><div class="highlight"><pre><span class="k">procedure </span><span class="nf">My_Routine</span> <span class="o">(...)</span> <span class="kr">is</span><span class="p"></span>
+<span class="kr">begin</span><span class="p"></span>
+  <span class="o">...</span>
+  <span class="c">-- Call subprogram expected to raise an exception:</span>
+  <span class="n">Call_To_The_Tested_Method</span> <span class="o">(</span><span class="n">some_args</span><span class="o">)</span><span class="p">;</span>
+  <span class="n">Assert</span> <span class="o">(</span><span class="kc">False</span><span class="p">,</span> <span class="o">&#39;</span><span class="kr">exception</span><span class="p"> </span><span class="kr">not</span><span class="p"> </span><span class="n">raised</span><span class="o">&#39;)</span><span class="p">;</span>
+<span class="kr">exception</span><span class="p"></span>
+  <span class="kr">when</span><span class="p"> </span><span class="n">desired_exception</span> <span class="o">=&gt;</span>
+    <span class="kr">null</span><span class="p">;</span>
+<span class="k">end </span><span class="nf">My_Routine</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>An unexpected exception will be recorded as such by the framework.  If you want
+your test routine to continue beyond verifying that an expected exception has
+been raised, you can nest the call and handler in a block.</p>
+</li>
+</ul>
+<span class="target" id="index-7"></span><span class="target" id="index-8"></span><span class="target" id="index-9"></span><span class="target" id="index-10"></span><ul class="simple" id="index-11">
+<li>Create a suite function inside a package to gather together test cases
+and sub-suites. (If either the ZFP or the cert run-time profiles ia being
+used, test cases and suites must be allocated using
+<code class="docutils literal"><span class="pre">AUnit.Memory.Utils.Gen_Alloc</span></code>, <code class="docutils literal"><span class="pre">AUnit.Test_Caller.Create</span></code>,
+<code class="docutils literal"><span class="pre">AUnit.Test_Suites.New_Suite</span></code>, or else they must be statically allocated.)</li>
+</ul>
+<span class="target" id="index-12"></span><ul id="index-13">
+<li><p class="first">At any level at which you wish to run tests, create a harness by
+instantiating procedure <code class="docutils literal"><span class="pre">AUnit.Run.Test_Runner</span></code> or function
+<code class="docutils literal"><span class="pre">AUnit.Run.Test_Runner_With_Status</span></code> with the top-level suite
+function to be executed. This instantiation provides a routine
+that executes all of the tests in the suite. We will call this
+user-instantiated routine <cite>Run</cite> in the text for backward compatibility
+with tests developed for AUnit&nbsp;1. Note that only one instance of <cite>Run</cite>
+can execute at a time.  This is a tradeoff made to reduce the stack requirement
+of the framework by allocating test result reporting data structures
+statically.</p>
+<span class="target" id="index-14"></span><p id="index-15">It is possible to pass a filter to a <cite>Test_Runner</cite>, so that only a
+subset of the tests run. In particular, this filter could be initialized from
+a command line parameter. See the package <code class="docutils literal"><span class="pre">AUnit.Test_Filters</span></code> for an
+example of such a filter. AUnit does not automatically initialize this filter
+from the command line both because it would not be supported with some of the
+limited run-time profiles (ZFP for instance), and because you might want to
+pass the argument in different ways (as a parameter to switch, or a stand-alone
+command line argument for instance).</p>
+<p id="index-16">It is also possible to control the contents of the output report by passing an
+object of type <code class="docutils literal"><span class="pre">AUnit_Options</span></code> to the <cite>Test_Runner</cite>. See package
+<code class="docutils literal"><span class="pre">AUnit.Options</span></code> for details.</p>
+</li>
+<li><p class="first">Build the code that calls the harness <cite>Run</cite> routine using
+<cite>gnatmake</cite> or <cite>gprbuild</cite>. The GNAT project file <code class="file docutils literal"><span class="pre">aunit.gpr</span></code> contains all
+necessary switches, and should be imported into your root project file.</p>
+</li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="test_case.html" title="3. Test Case"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="introduction.html" title="1. Introduction"
+             >previous</a> |</li>
+        <li><a href="../aunit_cb.html">AUnit Cookbook 2017 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2008-2017, AdaCore.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>AUnit Cookbook &mdash; AUnit Cookbook 2017 documentation</title>
+    
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '2017',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="AUnit Cookbook 2017 documentation" href="#" />
+    <link rel="next" title="1. Introduction" href="aunit_cb/introduction.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="aunit_cb/introduction.html" title="1. Introduction"
+             accesskey="N">next</a> |</li>
+        <li><a href="#">AUnit Cookbook 2017 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="#">
+              <img class="logo" src="_static/adacore_transparent.png" alt="Logo"/>
+            </a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="aunit_cb/introduction.html"
+                        title="next chapter">1. Introduction</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/aunit_cb.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="aunit-cookbook">
+<h1>AUnit Cookbook<a class="headerlink" href="#aunit-cookbook" title="Permalink to this headline">¶</a></h1>
+<p><em>Ada Unit Testing Framework</em></p>
+<div class="line-block">
+<div class="line">Version 2017</div>
+<div class="line">Date: May 16, 2017</div>
+</div>
+<p>AdaCore</p>
+<p>Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with no
+Invariant Sections, with the Front-Cover Texts being &#8220;AUnit Cookbook&#8221;
+and with no Back-Cover Texts.  A copy of the license is included in
+the section entitled <a class="reference internal" href="share/gnu_free_documentation_license.html#gnu-fdl"><em>GNU Free Documentation License</em></a>.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="aunit_cb/introduction.html">1. Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="aunit_cb/introduction.html#what-s-new-in-aunit-3">1.1. What&#8217;s new in AUnit 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aunit_cb/introduction.html#typographic-conventions">1.2. Typographic conventions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aunit_cb/introduction.html#examples">1.3. Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aunit_cb/introduction.html#note-about-limited-run-time-libraries">1.4. Note about limited run-time libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aunit_cb/introduction.html#thanks">1.5. Thanks</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="aunit_cb/overview.html">2. Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="aunit_cb/test_case.html">3. Test Case</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="aunit_cb/test_case.html#aunit-simple-test-cases">3.1. AUnit.Simple_Test_Cases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aunit_cb/test_case.html#aunit-test-cases">3.2. AUnit.Test_Cases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aunit_cb/test_case.html#aunit-test-caller">3.3. AUnit.Test_Caller</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="aunit_cb/fixture.html">4. Fixture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="aunit_cb/suite.html">5. Suite</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="aunit_cb/suite.html#creating-a-test-suite">5.1. Creating a Test Suite</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aunit_cb/suite.html#composition-of-suites">5.2. Composition of Suites</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="aunit_cb/reporting.html">6. Reporting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="aunit_cb/reporting.html#text-output">6.1. Text output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aunit_cb/reporting.html#xml-output">6.2. XML output</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="aunit_cb/test_organization.html">7. Test Organization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="aunit_cb/test_organization.html#general-considerations">7.1. General considerations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aunit_cb/test_organization.html#oop-considerations">7.2. OOP considerations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="aunit_cb/test_organization.html#using-aunit-test-fixtures">7.2.1. Using AUnit.Test_Fixtures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="aunit_cb/test_organization.html#using-aunit-test-cases">7.2.2. Using AUnit.Test_Cases</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="aunit_cb/test_organization.html#testing-generic-units">7.3. Testing generic units</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="aunit_cb/using_aunit_with_restricted_run-time_libraries.html">8. Using AUnit with Restricted Run-Time Libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="aunit_cb/installation_and_use.html">9. Installation and Use</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="aunit_cb/installation_and_use.html#note-on-gprbuild">9.1. Note on gprbuild</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aunit_cb/installation_and_use.html#support-for-other-platforms-run-times">9.2. Support for other platforms/run-times</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aunit_cb/installation_and_use.html#installing-aunit">9.3. Installing AUnit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aunit_cb/installation_and_use.html#installed-files">9.4. Installed files</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="aunit_cb/gps_support.html">10. GPS Support</a></li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="share/gnu_free_documentation_license.html">GNU Free Documentation License</a></li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="aunit_cb/introduction.html" title="1. Introduction"
+             >next</a> |</li>
+        <li><a href="#">AUnit Cookbook 2017 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2008-2017, AdaCore.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
+    </div>
+  </body>
+</html>

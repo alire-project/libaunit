@@ -1,0 +1,193 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>1. Introduction &mdash; AUnit Cookbook 2017 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2017',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="AUnit Cookbook 2017 documentation" href="../aunit_cb.html" />
+    <link rel="next" title="2. Overview" href="overview.html" />
+    <link rel="prev" title="AUnit Cookbook" href="../aunit_cb.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="overview.html" title="2. Overview"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../aunit_cb.html" title="AUnit Cookbook"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../aunit_cb.html">AUnit Cookbook 2017 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../aunit_cb.html">
+              <img class="logo" src="../_static/adacore_transparent.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../aunit_cb.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">1. Introduction</a><ul>
+<li><a class="reference internal" href="#what-s-new-in-aunit-3">1.1. What&#8217;s new in AUnit 3</a></li>
+<li><a class="reference internal" href="#typographic-conventions">1.2. Typographic conventions</a></li>
+<li><a class="reference internal" href="#examples">1.3. Examples</a></li>
+<li><a class="reference internal" href="#note-about-limited-run-time-libraries">1.4. Note about limited run-time libraries</a></li>
+<li><a class="reference internal" href="#thanks">1.5. Thanks</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../aunit_cb.html"
+                        title="previous chapter">AUnit Cookbook</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="overview.html"
+                        title="next chapter">2. Overview</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/aunit_cb/introduction.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="introduction">
+<span id="id1"></span><h1>1. Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
+<p>This is a short guide for using the AUnit test framework.
+AUnit is an adaptation of the Java <span class="target" id="index-0"></span>JUnit (Kent Beck, Erich Gamma) and C++
+<span class="target" id="index-1"></span>CppUnit (M. Feathers, J. Lacoste, E. Sommerlade, B. Lepilleur, B. Bakker,
+S. Robbins) unit test frameworks for Ada code.</p>
+<div class="section" id="what-s-new-in-aunit-3">
+<h2>1.1. What&#8217;s new in AUnit 3<a class="headerlink" href="#what-s-new-in-aunit-3" title="Permalink to this headline">¶</a></h2>
+<p>AUnit 3 brings several enhancements over AUnit 2 and AUnit 1:</p>
+<ul class="simple">
+<li>Removal of the genericity of the AUnit framework, making the AUnit 3
+API as close as possible to AUnit 1.</li>
+<li>Emulates dynamic memory management for limited run-time profiles.</li>
+<li>Provides a new XML reporter, and changes harness invocation to support
+easy switching among text, XML and customized reporters.</li>
+<li>Provides new tagged types <code class="docutils literal"><span class="pre">Simple_Test_Case</span></code>, <code class="docutils literal"><span class="pre">Test_Fixture</span></code> and <code class="docutils literal"><span class="pre">Test_Caller</span></code>
+that correspond to CppUnit&#8217;s <code class="docutils literal"><span class="pre">TestCase</span></code>, <code class="docutils literal"><span class="pre">TestFixture</span></code> and <code class="docutils literal"><span class="pre">TestCaller</span></code> classes.</li>
+</ul>
+<span class="target" id="index-2"></span><ul class="simple" id="index-3">
+<li>Emulates exception propagation for restricted run-time profiles
+(e.g. ZFP), by using the  gcc builtin <cite>setjmp</cite> / <cite>longjmp</cite> mechanism.</li>
+<li>Reports the source location of an error when possible.</li>
+</ul>
+</div>
+<div class="section" id="typographic-conventions">
+<h2>1.2. Typographic conventions<a class="headerlink" href="#typographic-conventions" title="Permalink to this headline">¶</a></h2>
+<p id="index-4">For notational convenience, <cite>&lt;version&gt;</cite> will be used throughout
+this document to stand for the AUnit product version number.
+For example, aunit-<em>&lt;version&gt;</em>-src expands to aunit-2017-src.</p>
+</div>
+<div class="section" id="examples">
+<h2>1.3. Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>With this version, we have provided new examples illustrating the enhanced
+features of the framework. These examples are in the AUnit
+installation directory:
+<code class="file docutils literal"><span class="pre">&lt;aunit-root&gt;/share/examples/aunit</span></code>, and are also available in the source
+distribution <code class="samp docutils literal"><span class="pre">aunit-</span><em><span class="pre">&lt;version&gt;</span></em><span class="pre">-src/examples</span></code>.</p>
+<p>The following examples are provided:</p>
+<ul class="simple">
+<li>simple_test: shows use of AUnit.Simple_Test_Cases
+(see <a class="reference internal" href="test_case.html#aunit-simple-test-cases"><em>AUnit.Simple_Test_Cases</em></a>).</li>
+<li>test_caller: shows use of AUnit.Test_Caller (see <a class="reference internal" href="test_case.html#aunit-test-caller"><em>AUnit.Test_Caller</em></a>).</li>
+<li>test_fixture: example of a test fixture (see <a class="reference internal" href="fixture.html#fixture"><em>Fixture</em></a>).</li>
+<li>liskov: This suite tests conformance to the Liskov Substitution Principle
+of a pair of simple tagged types. (see <a class="reference internal" href="test_organization.html#oop-considerations"><em>OOP considerations</em></a>)</li>
+<li>failures: example of handling and reporting failed tests
+(see <a class="reference internal" href="reporting.html#reporting"><em>Reporting</em></a>).</li>
+<li>calculator: a full example of test suite organization.</li>
+</ul>
+</div>
+<div class="section" id="note-about-limited-run-time-libraries">
+<h2>1.4. Note about limited run-time libraries<a class="headerlink" href="#note-about-limited-run-time-libraries" title="Permalink to this headline">¶</a></h2>
+<p>AUnit allows a great deal of flexibility for the structure of test cases,
+suites and harnesses.  The templates and examples given in this document
+illustrate how to use AUnit while staying within the constraints of the
+GNAT Pro restricted and Zero Footprint (ZFP) run-time libraries. Therefore,
+they avoid the use of dynamic allocation and some other features that would
+be outside of the profiles corresponding to these libraries. Tests targeted
+to the full Ada run-time library need not comply with these constraints.</p>
+</div>
+<div class="section" id="thanks">
+<h2>1.5. Thanks<a class="headerlink" href="#thanks" title="Permalink to this headline">¶</a></h2>
+<p>This document is adapted from the JUnit and CppUnit Cookbooks documents
+contained in their respective release packages.</p>
+<p>Special thanks to François Brun of Thales Avionics for his ideas about
+support for OOP testing.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="overview.html" title="2. Overview"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../aunit_cb.html" title="AUnit Cookbook"
+             >previous</a> |</li>
+        <li><a href="../aunit_cb.html">AUnit Cookbook 2017 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2008-2017, AdaCore.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
+    </div>
+  </body>
+</html>

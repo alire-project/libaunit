@@ -1,0 +1,535 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>7. Test Organization &mdash; AUnit Cookbook 2017 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2017',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="AUnit Cookbook 2017 documentation" href="../aunit_cb.html" />
+    <link rel="next" title="8. Using AUnit with Restricted Run-Time Libraries" href="using_aunit_with_restricted_run-time_libraries.html" />
+    <link rel="prev" title="6. Reporting" href="reporting.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="using_aunit_with_restricted_run-time_libraries.html" title="8. Using AUnit with Restricted Run-Time Libraries"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="reporting.html" title="6. Reporting"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../aunit_cb.html">AUnit Cookbook 2017 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../aunit_cb.html">
+              <img class="logo" src="../_static/adacore_transparent.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../aunit_cb.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">7. Test Organization</a><ul>
+<li><a class="reference internal" href="#general-considerations">7.1. General considerations</a></li>
+<li><a class="reference internal" href="#oop-considerations">7.2. OOP considerations</a><ul>
+<li><a class="reference internal" href="#using-aunit-test-fixtures">7.2.1. Using AUnit.Test_Fixtures</a></li>
+<li><a class="reference internal" href="#using-aunit-test-cases">7.2.2. Using AUnit.Test_Cases</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#testing-generic-units">7.3. Testing generic units</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="reporting.html"
+                        title="previous chapter">6. Reporting</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="using_aunit_with_restricted_run-time_libraries.html"
+                        title="next chapter">8. Using AUnit with Restricted Run-Time Libraries</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/aunit_cb/test_organization.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="test-organization">
+<span id="index-0"></span><span id="id1"></span><h1>7. Test Organization<a class="headerlink" href="#test-organization" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="general-considerations">
+<span id="id2"></span><h2>7.1. General considerations<a class="headerlink" href="#general-considerations" title="Permalink to this headline">¶</a></h2>
+<p>This section will discuss an approach to organizing an AUnit test harness,
+considering some possibilities offered by Ada language features.</p>
+<p>The general idea behind this approach to test organization is that making the
+test case a child of the unit under test gives some useful facilities.
+The test case gains visibility to the private part of the unit under test.
+This offers a more &#8216;white box&#8217; approach to examining the state of the unit
+under test than would, for instance, accessor functions defined in a separate
+fixture that is a child of the unit under test. Making the test case a child of
+the unit under test also provides a way to make the test case share certain
+characteristics of the unit under test.  For instance, if the unit under test
+is generic, then any child package (here the test case) must be also generic:
+any instantiation of the parent package will require an instantiation of the
+test case in order to accomplish its aims.</p>
+<p>Another useful concept is matching the test case type to that of the unit
+under test, for example:</p>
+<ul class="simple">
+<li>When testing a generic package, the test package should also be
+generic.</li>
+<li>When testing a tagged type, then test routines should be
+dispatching, and the test case type for a derived tagged type should be a
+derivation of the test case type for the parent.</li>
+</ul>
+<p>Maintaining such similarity of properties between the test case and unit under
+test can facilitate the testing of units derived in various ways.</p>
+<p>The following sections will concentrate on applying these concepts to
+the testing of tagged type hierarchies and to the testing of generic units.</p>
+<p>A full example of this kind of test organization is available in the AUnit
+installation directory:
+<code class="samp docutils literal"><em><span class="pre">&lt;AUnit-root&gt;</span></em><span class="pre">/share/examples/aunit/calculator</span></code>, or
+from the AUnit source distribution
+<code class="samp docutils literal"><span class="pre">aunit-</span><em><span class="pre">&lt;version&gt;</span></em><span class="pre">-src/examples/calculator</span></code>.</p>
+</div>
+<div class="section" id="oop-considerations">
+<span id="index-1"></span><span id="id3"></span><h2>7.2. OOP considerations<a class="headerlink" href="#oop-considerations" title="Permalink to this headline">¶</a></h2>
+<p>When testing a hierarchy of tagged types, one will often want to run tests
+for parent types against their derivations without rewriting those tests.</p>
+<p>We will illustrate some of the possible solutions available in AUnit,
+using the following simple example that we want to test:</p>
+<p>First we consider a <code class="docutils literal"><span class="pre">Root</span></code> package defining the <code class="docutils literal"><span class="pre">Parent</span></code>
+tagged type, with two procedures <code class="docutils literal"><span class="pre">P1</span></code> and <code class="docutils literal"><span class="pre">P2</span></code>.</p>
+<div class="highlight-ada"><div class="highlight"><pre><span class="k">package </span><span class="nf">Root</span> <span class="kr">is</span><span class="p"></span>
+   <span class="kr">type</span><span class="p"> </span><span class="n">Parent</span> <span class="kr">is</span><span class="p"> </span><span class="kr">tagged</span><span class="p"> </span><span class="kr">private</span><span class="p">;</span>
+
+   <span class="k">procedure </span><span class="nf">P1</span> <span class="o">(</span><span class="n">P</span> <span class="o">:</span> <span class="kr">in</span><span class="p"> </span><span class="kr">out</span><span class="p"> </span><span class="n">Parent</span><span class="o">)</span><span class="p">;</span>
+   <span class="k">procedure </span><span class="nf">P2</span> <span class="o">(</span><span class="n">P</span> <span class="o">:</span> <span class="kr">in</span><span class="p"> </span><span class="kr">out</span><span class="p"> </span><span class="n">Parent</span><span class="o">)</span><span class="p">;</span>
+<span class="kr">private</span><span class="p"></span>
+   <span class="kr">type</span><span class="p"> </span><span class="n">Parent</span> <span class="kr">is</span><span class="p"> </span><span class="kr">tagged</span><span class="p"> </span><span class="kr">record</span><span class="p"></span>
+      <span class="n">Some_Value</span> <span class="o">:</span> <span class="n">Some_Type</span><span class="p">;</span>
+   <span class="k">end record</span><span class="p">;</span>
+<span class="k">end </span><span class="nf">Root</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>We will also consider a derivation from type <code class="docutils literal"><span class="pre">Parent</span></code>:</p>
+<div class="highlight-ada"><div class="highlight"><pre><span class="kr">with</span><span class="p"> </span><span class="n">Root</span><span class="p">;</span>
+<span class="k">package </span><span class="nf">Branch</span> <span class="kr">is</span><span class="p"></span>
+   <span class="kr">type</span><span class="p"> </span><span class="n">Child</span> <span class="kr">is</span><span class="p"> </span><span class="kr">new</span><span class="p"> </span><span class="n">Root.Parent</span> <span class="kr">with</span><span class="p"> </span><span class="kr">private</span><span class="p">;</span>
+
+   <span class="k">procedure </span><span class="nf">P2</span> <span class="o">(</span><span class="n">C</span> <span class="o">:</span> <span class="kr">in</span><span class="p"> </span><span class="kr">out</span><span class="p"> </span><span class="n">Child</span><span class="o">)</span><span class="p">;</span>
+   <span class="k">procedure </span><span class="nf">P3</span> <span class="o">(</span><span class="n">C</span> <span class="o">:</span> <span class="kr">in</span><span class="p"> </span><span class="kr">out</span><span class="p"> </span><span class="n">Child</span><span class="o">)</span><span class="p">;</span>
+<span class="kr">private</span><span class="p"></span>
+   <span class="kr">type</span><span class="p"> </span><span class="n">Child</span> <span class="kr">is</span><span class="p"> </span><span class="kr">new</span><span class="p"> </span><span class="n">Root.Parent</span> <span class="kr">with</span><span class="p"> </span><span class="kr">null</span><span class="p"> </span><span class="kr">record</span><span class="p">;</span>
+<span class="k">end </span><span class="nf">Branch</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Note that <code class="docutils literal"><span class="pre">Child</span></code> retains the parent implementation of <code class="docutils literal"><span class="pre">P1</span></code>,
+overrides <code class="docutils literal"><span class="pre">P2</span></code> and adds <code class="docutils literal"><span class="pre">P3</span></code>. Its test will override
+<code class="docutils literal"><span class="pre">Test_P2</span></code> when we override <code class="docutils literal"><span class="pre">P2</span></code> (not necessary, but certainly
+possible).</p>
+<div class="section" id="using-aunit-test-fixtures">
+<span id="index-2"></span><h3>7.2.1. Using AUnit.Test_Fixtures<a class="headerlink" href="#using-aunit-test-fixtures" title="Permalink to this headline">¶</a></h3>
+<p>Using type <code class="docutils literal"><span class="pre">Test_Fixture`,</span> <span class="pre">we</span> <span class="pre">first</span> <span class="pre">test</span> <span class="pre">``Parent</span></code> using the
+following test case:</p>
+<div class="highlight-ada"><div class="highlight"><pre><span class="kr">with</span><span class="p"> </span><span class="n">AUnit</span><span class="p">; </span><span class="kr">use</span><span class="nn"> AUnit</span><span class="p">;</span>
+<span class="kr">with</span><span class="nn"> AUnit.Test_Fixtures</span><span class="p">; </span><span class="kr">use</span><span class="nn"> AUnit.Test_Fixtures</span><span class="p">;</span>
+
+<span class="c">--  We make this package a child package of Parent so that it can have</span>
+<span class="c">--  visibility to its private part</span>
+<span class="k">package </span><span class="nf">Root.Tests</span> <span class="kr">is</span><span class="p"></span>
+
+   <span class="kr">type</span><span class="p"> </span><span class="n">Parent_Access</span> <span class="kr">is</span><span class="p"> </span><span class="kr">access</span><span class="p"> </span><span class="kr">all</span><span class="p"> </span><span class="n">Root.Parent</span><span class="na">&#39;Class</span><span class="p">;</span>
+
+   <span class="c">--  Reference an object of type Parent&#39;Class in the test object, so</span>
+   <span class="c">--  that test procedures can have access to it.</span>
+   <span class="kr">type</span><span class="p"> </span><span class="n">Parent_Test</span> <span class="kr">is</span><span class="p"> </span><span class="kr">new</span><span class="p"> </span><span class="n">Test_Fixture</span> <span class="kr">with</span><span class="p"> </span><span class="kr">record</span><span class="p"></span>
+      <span class="n">Fixture</span> <span class="o">:</span> <span class="n">Parent_Access</span><span class="p">;</span>
+   <span class="k">end record</span><span class="p">;</span>
+
+   <span class="c">--  This will initialize P.</span>
+   <span class="k">procedure </span><span class="nf">Set_Up</span> <span class="o">(</span><span class="n">P</span> <span class="o">:</span> <span class="kr">in</span><span class="p"> </span><span class="kr">out</span><span class="p"> </span><span class="n">Parent_Test</span><span class="o">)</span><span class="p">;</span>
+
+   <span class="c">--  Test routines. If derived types are declared in child packages,</span>
+   <span class="c">--  these can be in the private part.</span>
+   <span class="k">procedure </span><span class="nf">Test_P1</span> <span class="o">(</span><span class="n">P</span> <span class="o">:</span> <span class="kr">in</span><span class="p"> </span><span class="kr">out</span><span class="p"> </span><span class="n">Parent_Test</span><span class="o">)</span><span class="p">;</span>
+   <span class="k">procedure </span><span class="nf">Test_P2</span> <span class="o">(</span><span class="n">P</span> <span class="o">:</span> <span class="kr">in</span><span class="p"> </span><span class="kr">out</span><span class="p"> </span><span class="n">Parent_Test</span><span class="o">)</span><span class="p">;</span>
+
+<span class="k">end </span><span class="nf">Root.Tests</span><span class="p">;</span>
+</pre></div>
+</div>
+<div class="highlight-ada"><div class="highlight"><pre><span class="k">package body </span><span class="nf">Root.Tests</span> <span class="kr">is</span><span class="p"></span>
+
+   <span class="n">Fixture</span> <span class="o">:</span> <span class="kr">aliased</span><span class="p"> </span><span class="n">Parent</span><span class="p">;</span>
+
+   <span class="c">--  We set Fixture in Parent_Test to an object of type Parent.</span>
+   <span class="k">procedure </span><span class="nf">Set_Up</span> <span class="o">(</span><span class="n">P</span> <span class="o">:</span> <span class="kr">in</span><span class="p"> </span><span class="kr">out</span><span class="p"> </span><span class="n">Parent_Test</span><span class="o">)</span> <span class="kr">is</span><span class="p"></span>
+   <span class="kr">begin</span><span class="p"></span>
+      <span class="n">P.Fixture</span> <span class="o">:=</span> <span class="n">Parent_Access</span> <span class="o">(</span><span class="n">Fixture</span><span class="na">&#39;Access</span><span class="o">)</span><span class="p">;</span>
+   <span class="k">end </span><span class="nf">Set_Up</span><span class="p">;</span>
+
+   <span class="c">--  Test routines: References to the Parent object are made via</span>
+   <span class="c">--  P.Fixture.all, and are thus dispatching.</span>
+   <span class="k">procedure </span><span class="nf">Test_P1</span> <span class="o">(</span><span class="n">P</span> <span class="o">:</span> <span class="kr">in</span><span class="p"> </span><span class="kr">out</span><span class="p"> </span><span class="n">Parent_Test</span><span class="o">)</span> <span class="kr">is</span><span class="p"> </span><span class="o">...</span><span class="p">;</span>
+   <span class="k">procedure </span><span class="nf">Test_P2</span> <span class="o">(</span><span class="n">P</span> <span class="o">:</span> <span class="kr">in</span><span class="p"> </span><span class="kr">out</span><span class="p"> </span><span class="n">Parent_Test</span><span class="o">)</span> <span class="kr">is</span><span class="p"> </span><span class="o">...</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>end Root.Tests;</p>
+<p>The associated test suite will be:</p>
+<div class="highlight-ada"><div class="highlight"><pre><span class="kr">with</span><span class="p"> </span><span class="n">AUnit.Test_Caller</span><span class="p">;</span>
+<span class="kr">with</span><span class="nn"> Root.Tests</span><span class="p">;</span>
+
+<span class="k">package body </span><span class="nf">Root_Suite</span> <span class="kr">is</span><span class="p"></span>
+   <span class="k">package </span><span class="nf">Caller</span> <span class="kr">is</span><span class="p"> </span><span class="kr">new</span><span class="p"> </span><span class="n">AUnit.Test_Caller</span> <span class="kr">with</span><span class="p"> </span><span class="o">(</span><span class="n">Root.Tests.Parent_Test</span><span class="o">)</span><span class="p">;</span>
+
+   <span class="k">function </span><span class="nf">Suite</span> <span class="kr">return</span><span class="p"> </span><span class="n">AUnit.Test_Suites.Access_Test_Suite</span> <span class="kr">is</span><span class="p"></span>
+      <span class="n">Ret</span> <span class="o">:</span> <span class="n">Access_Test_Suite</span> <span class="o">:=</span> <span class="n">AUnit.Test_Suites.New_Suite</span><span class="p">;</span>
+   <span class="kr">begin</span><span class="p"></span>
+      <span class="n">AUnit.Test_Suites.Add_Test</span>
+         <span class="o">(</span><span class="n">Ret</span><span class="p">,</span> <span class="n">Caller.Create</span> <span class="o">(</span><span class="s">&quot;Test Parent : P1&quot;</span><span class="p">,</span> <span class="n">Root.Tests.Test_P1</span><span class="na">&#39;Access</span><span class="o">))</span><span class="p">;</span>
+      <span class="n">AUnit.Test_Suites.Add_Test</span>
+         <span class="o">(</span><span class="n">Ret</span><span class="p">,</span> <span class="n">Caller.Create</span> <span class="o">(</span><span class="s">&quot;Test Parent : P2&quot;</span><span class="p">,</span> <span class="n">Root.Tests.Test_P2</span><span class="na">&#39;Access</span><span class="o">))</span><span class="p">;</span>
+      <span class="kr">return</span><span class="p"> </span><span class="n">Ret</span><span class="p">;</span>
+   <span class="k">end </span><span class="nf">Suite</span><span class="p">;</span>
+<span class="k">end </span><span class="nf">Root_Suite</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Now we define the test suite for the <code class="docutils literal"><span class="pre">Child</span></code> type. To do this,
+we inherit a test fixture from <code class="docutils literal"><span class="pre">Parent_Test</span></code>,
+overriding the <code class="docutils literal"><span class="pre">Set_Up</span></code> procedure to initialize <code class="docutils literal"><span class="pre">Fixture</span></code> with
+a <code class="docutils literal"><span class="pre">Child</span></code> object. We also override <code class="docutils literal"><span class="pre">Test_P2</span></code> to adapt it
+to the new implementation. We define a new <code class="docutils literal"><span class="pre">Test_P3</span></code> to test
+<code class="docutils literal"><span class="pre">P3</span></code>. And we inherit <code class="docutils literal"><span class="pre">Test_P1</span></code>, since <code class="docutils literal"><span class="pre">P1</span></code> is unchanged.</p>
+<div class="highlight-ada"><div class="highlight"><pre><span class="kr">with</span><span class="p"> </span><span class="n">Root.Tests</span><span class="p">; </span><span class="kr">use</span><span class="nn"> Root.Tests</span><span class="p">;</span>
+<span class="kr">with</span><span class="nn"> AUnit</span><span class="p">; </span><span class="kr">use</span><span class="nn"> AUnit</span><span class="p">;</span>
+<span class="kr">with</span><span class="nn"> AUnit.Test_Fixtures</span><span class="p">; </span><span class="kr">use</span><span class="nn"> AUnit.Test_Fixtures</span><span class="p">;</span>
+
+<span class="k">package </span><span class="nf">Branch.Tests</span> <span class="kr">is</span><span class="p"></span>
+
+   <span class="kr">type</span><span class="p"> </span><span class="n">Child_Test</span> <span class="kr">is</span><span class="p"> </span><span class="kr">new</span><span class="p"> </span><span class="n">Parent_Test</span> <span class="kr">with</span><span class="p"> </span><span class="kr">null</span><span class="p"> </span><span class="kr">record</span><span class="p">;</span>
+
+   <span class="k">procedure </span><span class="nf">Set_Up</span> <span class="o">(</span><span class="n">C</span> <span class="o">:</span> <span class="kr">in</span><span class="p"> </span><span class="kr">out</span><span class="p"> </span><span class="n">Child_Test</span><span class="o">)</span><span class="p">;</span>
+
+   <span class="c">--  Test routines:</span>
+   <span class="c">--  Test_P2 is overridden</span>
+   <span class="k">procedure </span><span class="nf">Test_P2</span> <span class="o">(</span><span class="n">C</span> <span class="o">:</span> <span class="kr">in</span><span class="p"> </span><span class="kr">out</span><span class="p"> </span><span class="n">Child_Test</span><span class="o">)</span><span class="p">;</span>
+   <span class="c">--  Test_P3 is new</span>
+   <span class="k">procedure </span><span class="nf">Test_P3</span> <span class="o">(</span><span class="n">C</span> <span class="o">:</span> <span class="kr">in</span><span class="p"> </span><span class="kr">out</span><span class="p"> </span><span class="n">Child_Test</span><span class="o">)</span><span class="p">;</span>
+
+<span class="k">end </span><span class="nf">Branch.Tests</span><span class="p">;</span>
+</pre></div>
+</div>
+<div class="highlight-ada"><div class="highlight"><pre><span class="k">package body </span><span class="nf">Branch.Tests</span> <span class="kr">is</span><span class="p"></span>
+   <span class="kr">use</span><span class="p"> </span><span class="n">Assertions</span><span class="p">;</span>
+
+   <span class="n">Fixture</span> <span class="o">:</span> <span class="n">Child</span><span class="p">;</span>
+   <span class="c">--  This could also be a field of Child_Test</span>
+
+   <span class="k">procedure </span><span class="nf">Set_Up</span> <span class="o">(</span><span class="n">C</span> <span class="o">:</span> <span class="kr">in</span><span class="p"> </span><span class="kr">out</span><span class="p"> </span><span class="n">Child_Test</span><span class="o">)</span> <span class="kr">is</span><span class="p"></span>
+   <span class="kr">begin</span><span class="p"></span>
+      <span class="c">--  The Fixture for this test will now be a Child</span>
+      <span class="n">C.Fixture</span> <span class="o">:=</span> <span class="n">Parent_Access</span> <span class="o">(</span><span class="n">Fixture</span><span class="na">&#39;Access</span><span class="o">)</span><span class="p">;</span>
+   <span class="k">end </span><span class="nf">Set_Up</span><span class="p">;</span>
+
+   <span class="c">--  Test routines:</span>
+   <span class="k">procedure </span><span class="nf">Test_P2</span> <span class="o">(</span><span class="n">C</span> <span class="o">:</span> <span class="kr">in</span><span class="p"> </span><span class="kr">out</span><span class="p"> </span><span class="n">Child_Test</span><span class="o">)</span> <span class="kr">is</span><span class="p"> </span><span class="o">...</span><span class="p">;</span>
+   <span class="k">procedure </span><span class="nf">Test_P3</span> <span class="o">(</span><span class="n">C</span> <span class="o">:</span> <span class="kr">in</span><span class="p"> </span><span class="kr">out</span><span class="p"> </span><span class="n">Child_Test</span><span class="o">)</span> <span class="kr">is</span><span class="p"> </span><span class="o">...</span><span class="p">;</span>
+
+<span class="k">end </span><span class="nf">Branch.Tests</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>The suite for Branch.Tests will now be:</p>
+<div class="highlight-ada"><div class="highlight"><pre><span class="kr">with</span><span class="p"> </span><span class="n">AUnit.Test_Caller</span><span class="p">;</span>
+<span class="kr">with</span><span class="nn"> Branch.Tests</span><span class="p">;</span>
+
+<span class="k">package body </span><span class="nf">Branch_Suite</span> <span class="kr">is</span><span class="p"></span>
+   <span class="k">package </span><span class="nf">Caller</span> <span class="kr">is</span><span class="p"> </span><span class="kr">new</span><span class="p"> </span><span class="n">AUnit.Test_Caller</span> <span class="kr">with</span><span class="p"> </span><span class="o">(</span><span class="n">Branch.Tests.Parent_Test</span><span class="o">)</span><span class="p">;</span>
+
+   <span class="c">--  In this suite, we use Ada 2005 distinguished receiver notation to</span>
+   <span class="c">--  simplify the code.</span>
+
+   <span class="k">function </span><span class="nf">Suite</span> <span class="kr">return</span><span class="p"> </span><span class="n">Access_Test_Suite</span> <span class="kr">is</span><span class="p"></span>
+      <span class="n">Ret</span> <span class="o">:</span> <span class="n">Access_Test_Suite</span> <span class="o">:=</span> <span class="n">AUnit.Test_Suites.New_Suite</span><span class="p">;</span>
+   <span class="kr">begin</span><span class="p"></span>
+      <span class="c">--  We use the inherited Test_P1. Note that it is</span>
+      <span class="c">--  Branch.Tests.Set_Up that will be called, and so Test_P1 will be run</span>
+      <span class="c">--  against an object of type Child</span>
+      <span class="n">Ret.Add_Test</span>
+         <span class="o">(</span><span class="n">Caller.Create</span> <span class="o">(</span><span class="s">&quot;Test Child : P1&quot;</span><span class="p">,</span> <span class="n">Branch.Tests.Test_P1</span><span class="na">&#39;Access</span><span class="o">))</span><span class="p">;</span>
+      <span class="c">--  We use the overridden Test_P2</span>
+      <span class="n">Ret.Add_Test</span>
+         <span class="o">(</span><span class="n">Caller.Create</span> <span class="o">(</span><span class="s">&quot;Test Child : P2&quot;</span><span class="p">,</span> <span class="n">Branch.Tests.Test_P2</span><span class="na">&#39;Access</span><span class="o">))</span><span class="p">;</span>
+      <span class="c">--  We use the new Test_P2</span>
+      <span class="n">Ret.Add_Test</span>
+         <span class="o">(</span><span class="n">Caller.Create</span> <span class="o">(</span><span class="s">&quot;Test Child : P3&quot;</span><span class="p">,</span> <span class="n">Branch.Tests.Test_P3</span><span class="na">&#39;Access</span><span class="o">))</span><span class="p">;</span>
+      <span class="kr">return</span><span class="p"> </span><span class="n">Ret</span><span class="p">;</span>
+   <span class="k">end </span><span class="nf">Suite</span><span class="p">;</span>
+<span class="k">end </span><span class="nf">Branch_Suite</span><span class="p">;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="using-aunit-test-cases">
+<h3>7.2.2. Using AUnit.Test_Cases<a class="headerlink" href="#using-aunit-test-cases" title="Permalink to this headline">¶</a></h3>
+<p id="index-3">Using an <code class="docutils literal"><span class="pre">AUnit.Test_Cases.Test_Case</span></code> derived type, we obtain the
+following code for testing <code class="docutils literal"><span class="pre">Parent</span></code>:</p>
+<div class="highlight-ada"><div class="highlight"><pre><span class="kr">with</span><span class="p"> </span><span class="n">AUnit</span><span class="p">; </span><span class="kr">use</span><span class="nn"> AUnit</span><span class="p">;</span>
+<span class="kr">with</span><span class="nn"> AUnit.Test_Cases</span><span class="p">;</span>
+<span class="k">package </span><span class="nf">Root.Tests</span> <span class="kr">is</span><span class="p"></span>
+
+   <span class="kr">type</span><span class="p"> </span><span class="n">Parent_Access</span> <span class="kr">is</span><span class="p"> </span><span class="kr">access</span><span class="p"> </span><span class="kr">all</span><span class="p"> </span><span class="n">Root.Parent</span><span class="na">&#39;Class</span><span class="p">;</span>
+
+   <span class="kr">type</span><span class="p"> </span><span class="n">Parent_Test</span> <span class="kr">is</span><span class="p"> </span><span class="kr">new</span><span class="p"> </span><span class="n">AUnit.Test_Cases.Test_Case</span> <span class="kr">with</span><span class="p"> </span><span class="kr">record</span><span class="p"></span>
+      <span class="n">Fixture</span> <span class="o">:</span> <span class="n">Parent_Access</span><span class="p">;</span>
+   <span class="k">end record</span><span class="p">;</span>
+
+   <span class="k">function </span><span class="nf">Name</span> <span class="o">(</span><span class="n">P</span> <span class="o">:</span> <span class="n">Parent_Test</span><span class="o">)</span> <span class="kr">return</span><span class="p"> </span><span class="n">Message_String</span><span class="p">;</span>
+   <span class="k">procedure </span><span class="nf">Register_Tests</span> <span class="o">(</span><span class="n">P</span> <span class="o">:</span> <span class="kr">in</span><span class="p"> </span><span class="kr">out</span><span class="p"> </span><span class="n">Parent_Test</span><span class="o">)</span><span class="p">;</span>
+
+   <span class="k">procedure </span><span class="nf">Set_Up_Case</span> <span class="o">(</span><span class="n">P</span> <span class="o">:</span> <span class="kr">in</span><span class="p"> </span><span class="kr">out</span><span class="p"> </span><span class="n">Parent_Test</span><span class="o">)</span><span class="p">;</span>
+
+   <span class="c">--  Test routines. If derived types are declared in child packages,</span>
+   <span class="c">--  these can be in the private part.</span>
+   <span class="k">procedure </span><span class="nf">Test_P1</span> <span class="o">(</span><span class="n">P</span> <span class="o">:</span> <span class="kr">in</span><span class="p"> </span><span class="kr">out</span><span class="p"> </span><span class="n">Parent_Test</span><span class="o">)</span><span class="p">;</span>
+   <span class="k">procedure </span><span class="nf">Test_P2</span> <span class="o">(</span><span class="n">P</span> <span class="o">:</span> <span class="kr">in</span><span class="p"> </span><span class="kr">out</span><span class="p"> </span><span class="n">Parent_Test</span><span class="o">)</span><span class="p">;</span>
+
+<span class="k">end </span><span class="nf">Root.Tests</span><span class="p">;</span>
+</pre></div>
+</div>
+<p id="index-4">The body of the test case will follow the usual pattern, declaring one or
+more objects of type <code class="docutils literal"><span class="pre">Parent</span></code>, and executing statements in the
+test routines against them.  However, in order to support dispatching to
+overriding routines of derived test cases, we need to introduce class-wide
+wrapper routines for each primitive test routine of the parent type that
+we anticipate may be overridden. Instead of registering the parent&#8217;s
+overridable primitive operations directly using <code class="docutils literal"><span class="pre">Register_Routine</span></code>,
+we register the wrapper using <code class="docutils literal"><span class="pre">Register_Wrapper</span></code>. This latter routine
+is exported by instantiating
+<code class="docutils literal"><span class="pre">AUnit.Test_Cases.Specific_Test_Case_Registration</span></code> with the actual
+parameter being the parent test case type.</p>
+<div class="highlight-ada"><div class="highlight"><pre><span class="kr">with</span><span class="p"> </span><span class="n">AUnit.Assertions</span><span class="p">; </span><span class="kr">use</span><span class="nn"> AUnit.Assertions</span>
+<span class="k">package body </span><span class="nf">Root.Tests</span> <span class="kr">is</span><span class="p"></span>
+
+   <span class="c">--  Declare class-wide wrapper routines for any test routines that will be</span>
+   <span class="c">--  overridden:</span>
+   <span class="k">procedure </span><span class="nf">Test_P1_Wrapper</span> <span class="o">(</span><span class="n">P</span> <span class="o">:</span> <span class="kr">in</span><span class="p"> </span><span class="kr">out</span><span class="p"> </span><span class="n">Parent_Test</span><span class="na">&#39;Class</span><span class="o">)</span><span class="p">;</span>
+   <span class="k">procedure </span><span class="nf">Test_P2_Wrapper</span> <span class="o">(</span><span class="n">P</span> <span class="o">:</span> <span class="kr">in</span><span class="p"> </span><span class="kr">out</span><span class="p"> </span><span class="n">Parent_Test</span><span class="na">&#39;Class</span><span class="o">)</span><span class="p">;</span>
+
+   <span class="k">function </span><span class="nf">Name</span> <span class="o">(</span><span class="n">P</span> <span class="o">:</span> <span class="n">Parent_Test</span><span class="o">)</span> <span class="kr">return</span><span class="p"> </span><span class="n">Message_String</span> <span class="kr">is</span><span class="p"> </span><span class="o">...</span><span class="p">;</span>
+
+   <span class="c">--  Set the fixture in P</span>
+   <span class="n">Fixture</span> <span class="o">:</span> <span class="kr">aliased</span><span class="p"> </span><span class="n">Parent</span><span class="p">;</span>
+
+   <span class="k">procedure </span><span class="nf">Set_Up_Case</span> <span class="o">(</span><span class="n">P</span> <span class="o">:</span> <span class="kr">in</span><span class="p"> </span><span class="kr">out</span><span class="p"> </span><span class="n">Parent_Test</span><span class="o">)</span> <span class="kr">is</span><span class="p"></span>
+   <span class="kr">begin</span><span class="p"></span>
+      <span class="n">P.Fixture</span> <span class="o">:=</span> <span class="n">Parent_Access</span> <span class="o">(</span><span class="n">Fixture</span><span class="na">&#39;Access</span><span class="o">)</span><span class="p">;</span>
+   <span class="k">end </span><span class="nf">Set_Up_Case</span><span class="p">;</span>
+
+   <span class="c">--  Register Wrappers:</span>
+   <span class="k">procedure </span><span class="nf">Register_Tests</span> <span class="o">(</span><span class="n">P</span> <span class="o">:</span> <span class="kr">in</span><span class="p"> </span><span class="kr">out</span><span class="p"> </span><span class="n">Parent_Test</span><span class="o">)</span> <span class="kr">is</span><span class="p"></span>
+      <span class="k">package </span><span class="nf">Register_Specific</span> <span class="kr">is</span><span class="p"></span>
+         <span class="kr">new</span><span class="p"> </span><span class="n">Test_Cases.Specific_Test_Case_Registration</span> <span class="o">(</span><span class="n">Parent_Test</span><span class="o">)</span><span class="p">;</span>
+<span class="p">      </span><span class="kr">use</span><span class="nn"> Register_Specific</span><span class="p">;</span>
+   <span class="kr">begin</span><span class="p"></span>
+      <span class="n">Register_Wrapper</span> <span class="o">(</span><span class="n">P</span><span class="p">,</span> <span class="n">Test_P1_Wrapper</span><span class="na">&#39;Access</span><span class="p">,</span> <span class="s">&quot;Test P1&quot;</span><span class="o">)</span><span class="p">;</span>
+      <span class="n">Register_Wrapper</span> <span class="o">(</span><span class="n">P</span><span class="p">,</span> <span class="n">Test_P2_Wrapper</span><span class="na">&#39;Access</span><span class="p">,</span> <span class="s">&quot;Test P2&quot;</span><span class="o">)</span><span class="p">;</span>
+   <span class="k">end </span><span class="nf">Register_Tests</span><span class="p">;</span>
+
+   <span class="c">--  Test routines:</span>
+   <span class="k">procedure </span><span class="nf">Test_P1</span> <span class="o">(</span><span class="n">P</span> <span class="o">:</span> <span class="kr">in</span><span class="p"> </span><span class="kr">out</span><span class="p"> </span><span class="n">Parent_Test</span><span class="o">)</span> <span class="kr">is</span><span class="p"> </span><span class="o">...</span><span class="p">;</span>
+   <span class="k">procedure </span><span class="nf">Test_P2</span> <span class="o">(</span><span class="n">C</span> <span class="o">:</span> <span class="kr">in</span><span class="p"> </span><span class="kr">out</span><span class="p"> </span><span class="n">Parent_Test</span><span class="o">)</span> <span class="kr">is</span><span class="p"> </span><span class="o">...</span><span class="p">;</span>
+
+   <span class="c">--  Wrapper routines. These dispatch to the corresponding primitive</span>
+   <span class="c">--  test routines of the specific types.</span>
+   <span class="k">procedure </span><span class="nf">Test_P1_Wrapper</span> <span class="o">(</span><span class="n">P</span> <span class="o">:</span> <span class="kr">in</span><span class="p"> </span><span class="kr">out</span><span class="p"> </span><span class="n">Parent_Test</span><span class="na">&#39;Class</span><span class="o">)</span> <span class="kr">is</span><span class="p"></span>
+   <span class="kr">begin</span><span class="p"></span>
+      <span class="n">Test_P1</span> <span class="o">(</span><span class="n">P</span><span class="o">)</span><span class="p">;</span>
+   <span class="k">end </span><span class="nf">Test_P1_Wrapper</span><span class="p">;</span>
+
+   <span class="k">procedure </span><span class="nf">Test_P2_Wrapper</span> <span class="o">(</span><span class="n">P</span> <span class="o">:</span> <span class="kr">in</span><span class="p"> </span><span class="kr">out</span><span class="p"> </span><span class="n">Parent_Test</span><span class="na">&#39;Class</span><span class="o">)</span> <span class="kr">is</span><span class="p"></span>
+   <span class="kr">begin</span><span class="p"></span>
+      <span class="n">Test_P2</span> <span class="o">(</span><span class="n">P</span><span class="o">)</span><span class="p">;</span>
+   <span class="k">end </span><span class="nf">Test_P2_Wrapper</span><span class="p">;</span>
+
+<span class="k">end </span><span class="nf">Root.Tests</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>The code for testing the <cite>Child</cite> type will now be:</p>
+<div class="highlight-ada"><div class="highlight"><pre><span class="kr">with</span><span class="p"> </span><span class="n">Parent_Tests</span><span class="p">; </span><span class="kr">use</span><span class="nn"> Parent_Tests</span><span class="p">;</span>
+<span class="kr">with</span><span class="nn"> AUnit</span><span class="p">; </span><span class="kr">use</span><span class="nn"> AUnit</span><span class="p">;</span>
+<span class="k">package </span><span class="nf">Branch.Tests</span> <span class="kr">is</span><span class="p"></span>
+
+   <span class="kr">type</span><span class="p"> </span><span class="n">Child_Test</span> <span class="kr">is</span><span class="p"> </span><span class="kr">new</span><span class="p"> </span><span class="n">Parent_Test</span> <span class="kr">with</span><span class="p"> </span><span class="kr">private</span><span class="p">;</span>
+
+   <span class="k">function </span><span class="nf">Name</span> <span class="o">(</span><span class="n">C</span> <span class="o">:</span> <span class="n">Child_Test</span><span class="o">)</span> <span class="kr">return</span><span class="p"> </span><span class="n">Message_String</span><span class="p">;</span>
+   <span class="k">procedure </span><span class="nf">Register_Tests</span> <span class="o">(</span><span class="n">C</span> <span class="o">:</span> <span class="kr">in</span><span class="p"> </span><span class="kr">out</span><span class="p"> </span><span class="n">Child_Test</span><span class="o">)</span><span class="p">;</span>
+
+   <span class="c">--  Override Set_Up_Case so that the fixture changes.</span>
+   <span class="k">procedure </span><span class="nf">Set_Up_Case</span> <span class="o">(</span><span class="n">C</span> <span class="o">:</span> <span class="kr">in</span><span class="p"> </span><span class="kr">out</span><span class="p"> </span><span class="n">Child_Test</span><span class="o">)</span><span class="p">;</span>
+
+   <span class="c">--  Test routines:</span>
+   <span class="k">procedure </span><span class="nf">Test_P2</span> <span class="o">(</span><span class="n">C</span> <span class="o">:</span> <span class="kr">in</span><span class="p"> </span><span class="kr">out</span><span class="p"> </span><span class="n">Child_Test</span><span class="o">)</span><span class="p">;</span>
+   <span class="k">procedure </span><span class="nf">Test_P3</span> <span class="o">(</span><span class="n">C</span> <span class="o">:</span> <span class="kr">in</span><span class="p"> </span><span class="kr">out</span><span class="p"> </span><span class="n">Child_Test</span><span class="o">)</span><span class="p">;</span>
+
+<span class="kr">private</span><span class="p"></span>
+   <span class="kr">type</span><span class="p"> </span><span class="n">Child_Test</span> <span class="kr">is</span><span class="p"> </span><span class="kr">new</span><span class="p"> </span><span class="n">Parent_Test</span> <span class="kr">with</span><span class="p"> </span><span class="kr">null</span><span class="p"> </span><span class="kr">record</span><span class="p">;</span>
+<span class="k">end </span><span class="nf">Branch.Tests</span><span class="p">;</span>
+</pre></div>
+</div>
+<div class="highlight-ada"><div class="highlight"><pre><span class="kr">with</span><span class="p"> </span><span class="n">AUnit.Assertions</span><span class="p">; </span><span class="kr">use</span><span class="nn"> AUnit.Assertions</span><span class="p">;</span>
+<span class="k">package body </span><span class="nf">Branch.Tests</span> <span class="kr">is</span><span class="p"></span>
+
+   <span class="c">--  Declare wrapper for Test_P3:</span>
+   <span class="k">procedure </span><span class="nf">Test_P3_Wrapper</span> <span class="o">(</span><span class="n">C</span> <span class="o">:</span> <span class="kr">in</span><span class="p"> </span><span class="kr">out</span><span class="p"> </span><span class="n">Child_Test</span><span class="na">&#39;Class</span><span class="o">)</span><span class="p">;</span>
+
+   <span class="k">function </span><span class="nf">Name</span> <span class="o">(</span><span class="n">C</span> <span class="o">:</span> <span class="n">Child_Test</span><span class="o">)</span> <span class="kr">return</span><span class="p"> </span><span class="n">Test_String</span> <span class="kr">is</span><span class="p"> </span><span class="o">...</span><span class="p">;</span>
+
+   <span class="k">procedure </span><span class="nf">Register_Tests</span> <span class="o">(</span><span class="n">C</span> <span class="o">:</span> <span class="kr">in</span><span class="p"> </span><span class="kr">out</span><span class="p"> </span><span class="n">Child_Test</span><span class="o">)</span> <span class="kr">is</span><span class="p"></span>
+      <span class="k">package </span><span class="nf">Register_Specific</span> <span class="kr">is</span><span class="p"></span>
+         <span class="kr">new</span><span class="p"> </span><span class="n">Test_Cases.Specific_Test_Case_Registration</span> <span class="o">(</span><span class="n">Child_Test</span><span class="o">)</span><span class="p">;</span>
+<span class="p">      </span><span class="kr">use</span><span class="nn"> Register_Specific</span><span class="p">;</span>
+   <span class="kr">begin</span><span class="p"></span>
+      <span class="c">-- Register parent tests for P1 and P2:</span>
+      <span class="n">Parent_Tests.Register_Tests</span> <span class="o">(</span><span class="n">Parent_Test</span> <span class="o">(</span><span class="n">C</span><span class="o">))</span><span class="p">;</span>
+
+      <span class="c">-- Repeat for each new test routine (Test_P3 in this case):</span>
+      <span class="n">Register_Wrapper</span> <span class="o">(</span><span class="n">C</span><span class="p">,</span> <span class="n">Test_P3_Wrapper</span><span class="na">&#39;Access</span><span class="p">,</span> <span class="s">&quot;Test P3&quot;</span><span class="o">)</span><span class="p">;</span>
+   <span class="k">end </span><span class="nf">Register_Tests</span><span class="p">;</span>
+
+   <span class="c">--  Set the fixture in P</span>
+   <span class="n">Fixture</span> <span class="o">:</span> <span class="kr">aliased</span><span class="p"> </span><span class="n">Child</span><span class="p">;</span>
+   <span class="k">procedure </span><span class="nf">Set_Up_Case</span> <span class="o">(</span><span class="n">C</span> <span class="o">:</span> <span class="kr">in</span><span class="p"> </span><span class="kr">out</span><span class="p"> </span><span class="n">Child_Test</span><span class="o">)</span> <span class="kr">is</span><span class="p"></span>
+   <span class="kr">begin</span><span class="p"></span>
+      <span class="n">C.Fixture</span> <span class="o">:=</span> <span class="n">Parent_Access</span> <span class="o">(</span><span class="n">Fixture</span><span class="na">&#39;Access</span><span class="o">)</span><span class="p">;</span>
+   <span class="k">end </span><span class="nf">Set_Up_Case</span><span class="p">;</span>
+
+   <span class="c">--  Test routines:</span>
+   <span class="k">procedure </span><span class="nf">Test_P2</span> <span class="o">(</span><span class="n">C</span> <span class="o">:</span> <span class="kr">in</span><span class="p"> </span><span class="kr">out</span><span class="p"> </span><span class="n">Child_Test</span><span class="o">)</span> <span class="kr">is</span><span class="p"> </span><span class="o">...</span><span class="p">;</span>
+   <span class="k">procedure </span><span class="nf">Test_P3</span> <span class="o">(</span><span class="n">C</span> <span class="o">:</span> <span class="kr">in</span><span class="p"> </span><span class="kr">out</span><span class="p"> </span><span class="n">Child_Test</span><span class="o">)</span> <span class="kr">is</span><span class="p"> </span><span class="o">...</span><span class="p">;</span>
+
+   <span class="c">--  Wrapper for new routine:</span>
+   <span class="k">procedure </span><span class="nf">Test_P3_Wrapper</span> <span class="o">(</span><span class="n">C</span> <span class="o">:</span> <span class="kr">in</span><span class="p"> </span><span class="kr">out</span><span class="p"> </span><span class="n">Child_Test</span><span class="na">&#39;Class</span><span class="o">)</span> <span class="kr">is</span><span class="p"></span>
+   <span class="kr">begin</span><span class="p"></span>
+      <span class="n">Test_P3</span> <span class="o">(</span><span class="n">C</span><span class="o">)</span><span class="p">;</span>
+   <span class="k">end </span><span class="nf">Test_P3_Wrapper</span><span class="p">;</span>
+
+<span class="k">end </span><span class="nf">Branch.Tests</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Note that inherited and overridden tests do not need to be explicitly
+re-registered in derived test cases - one just calls the parent version of
+<code class="docutils literal"><span class="pre">Register_Tests</span></code>. If the application tagged type hierarchy is organized
+into parent and child units, one could also organize the test cases into a
+hierarchy that reflects that of the units under test.</p>
+</div>
+</div>
+<div class="section" id="testing-generic-units">
+<span id="index-5"></span><span id="id4"></span><h2>7.3. Testing generic units<a class="headerlink" href="#testing-generic-units" title="Permalink to this headline">¶</a></h2>
+<p>When testing generic units, one would like to apply the same generic tests
+to all instantiations in an application.  A simple approach is to make the
+test case a child package of the unit under test (which then must also be
+generic).</p>
+<p>For instance, suppose the generic unit under test is a package (it could
+be a subprogram, and the same principle would apply):</p>
+<div class="highlight-ada"><div class="highlight"><pre><span class="kr">generic</span><span class="p"></span>
+   <span class="c">-- Formal parameter list</span>
+<span class="k">package </span><span class="nf">Template</span> <span class="kr">is</span><span class="p"></span>
+   <span class="c">-- Declarations</span>
+<span class="k">end </span><span class="nf">Template</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>The corresponding test case would be:</p>
+<div class="highlight-ada"><div class="highlight"><pre><span class="kr">with</span><span class="p"> </span><span class="n">AUnit</span><span class="p">; </span><span class="kr">use</span><span class="nn"> AUnit</span><span class="p">;</span>
+<span class="kr">with</span><span class="nn"> AUnit.Test_Fixtures</span><span class="p">;</span>
+<span class="kr">generic</span><span class="p"></span>
+<span class="k">package </span><span class="nf">Template.Gen_Tests</span> <span class="kr">is</span><span class="p"></span>
+
+   <span class="kr">type</span><span class="p"> </span><span class="n">Template_Test</span> <span class="kr">is</span><span class="p"> </span><span class="kr">new</span><span class="p"> </span><span class="n">AUnit.Test_Fixtures.Test_Fixture</span> <span class="kr">with</span><span class="p"> </span><span class="o">...</span><span class="p">;</span>
+
+   <span class="c">--  Declare test routines</span>
+
+<span class="k">end </span><span class="nf">Template.Gen_Tests</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>The body will follow the usual patterns with the fixture based on the
+parent package <code class="docutils literal"><span class="pre">Template</span></code>. Note that due to an Ada AI, accesses to
+test routines, along with the test routine specifications, must be defined
+in the package specification rather than in its body.</p>
+<p>Instances of <code class="docutils literal"><span class="pre">Template</span></code> will automatically define the <code class="docutils literal"><span class="pre">Tests</span></code> child
+package that can be directly instantiated as follows:</p>
+<div class="highlight-ada"><div class="highlight"><pre><span class="kr">with</span><span class="p"> </span><span class="n">Template.Gen_Test</span><span class="p">;</span>
+<span class="kr">with</span><span class="nn"> Instance_Of_Template</span><span class="p">;</span>
+<span class="k">package </span><span class="nf">Instance_Of_Template.Tests</span> <span class="kr">is</span><span class="p"> </span><span class="kr">new</span><span class="p"> </span><span class="n">Instance_Of_Template.Gen_Test</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>The instantiated test case objects are added to a suite in the usual manner.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="using_aunit_with_restricted_run-time_libraries.html" title="8. Using AUnit with Restricted Run-Time Libraries"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="reporting.html" title="6. Reporting"
+             >previous</a> |</li>
+        <li><a href="../aunit_cb.html">AUnit Cookbook 2017 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2008-2017, AdaCore.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
+    </div>
+  </body>
+</html>

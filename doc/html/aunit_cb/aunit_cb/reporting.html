@@ -1,0 +1,224 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>6. Reporting &mdash; AUnit Cookbook 2017 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2017',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="AUnit Cookbook 2017 documentation" href="../aunit_cb.html" />
+    <link rel="next" title="7. Test Organization" href="test_organization.html" />
+    <link rel="prev" title="5. Suite" href="suite.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="test_organization.html" title="7. Test Organization"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="suite.html" title="5. Suite"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../aunit_cb.html">AUnit Cookbook 2017 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../aunit_cb.html">
+              <img class="logo" src="../_static/adacore_transparent.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../aunit_cb.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">6. Reporting</a><ul>
+<li><a class="reference internal" href="#text-output">6.1. Text output</a></li>
+<li><a class="reference internal" href="#xml-output">6.2. XML output</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="suite.html"
+                        title="previous chapter">5. Suite</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="test_organization.html"
+                        title="next chapter">7. Test Organization</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/aunit_cb/reporting.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="reporting">
+<span id="id1"></span><h1>6. Reporting<a class="headerlink" href="#reporting" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="index-0"></span><span class="target" id="index-1"></span><span class="target" id="index-2"></span><p id="index-3">Test results can be reported using several <cite>Reporters</cite>. By default, two
+reporters are available in AUnit:
+<code class="docutils literal"><span class="pre">AUnit.Reporter.Text.Text_Reporter</span></code> and
+<code class="docutils literal"><span class="pre">AUnit.Reporter.XML.XML_Reporter</span></code>. The first one is a simple
+console reporting routine, while the second one outputs the result using
+an XML format. These are invoked when the <code class="docutils literal"><span class="pre">Run</span></code> routine of an
+instantiation of <code class="docutils literal"><span class="pre">AUnit.Run.Test_Runner</span></code> is called.</p>
+<p id="index-4">New reporters can be created using children of
+<code class="docutils literal"><span class="pre">AUnit.Reporter.Reporter</span></code>.</p>
+<p>The Reporter is selected by specifying it when calling <code class="docutils literal"><span class="pre">Run</span></code>:</p>
+<div class="highlight-ada"><div class="highlight"><pre><span class="kr">with</span><span class="p"> </span><span class="n">A_Suite</span><span class="p">;</span>
+<span class="kr">with</span><span class="nn"> AUnit.Run</span><span class="p">;</span>
+<span class="kr">with</span><span class="nn"> AUnit.Reporter.Text</span><span class="p">;</span>
+
+<span class="k">procedure </span><span class="nf">My_Tests</span> <span class="kr">is</span><span class="p"></span>
+   <span class="k">procedure </span><span class="nf">Run</span> <span class="kr">is</span><span class="p"> </span><span class="kr">new</span><span class="p"> </span><span class="n">AUnit.Run.Test_Runner</span> <span class="o">(</span><span class="n">A_Suite.Suite</span><span class="o">)</span><span class="p">;</span>
+   <span class="n">Reporter</span> <span class="o">:</span> <span class="n">AUnit.Reporter.Text.Text_Reporter</span><span class="p">;</span>
+<span class="kr">begin</span><span class="p"></span>
+   <span class="n">Run</span> <span class="o">(</span><span class="n">Reporter</span><span class="o">)</span><span class="p">;</span>
+<span class="k">end </span><span class="nf">My_Tests</span><span class="p">;</span>
+</pre></div>
+</div>
+<p id="index-5">The final report is output once all tests have been run, so that they can be
+grouped depending on their status (passed or fail). If you need to output the
+tests as they are run, you should consider extending the <cite>Test_Result</cite>
+type and do some output every time a success or failure is registered.</p>
+<div class="section" id="text-output">
+<h2>6.1. Text output<a class="headerlink" href="#text-output" title="Permalink to this headline">¶</a></h2>
+<p>Here is an example where the test harness runs 4 tests, one reporting an
+assertion failure, one reporting an unexpected error (exception):</p>
+<div class="highlight-python"><div class="highlight"><pre>--------------------
+
+   Total Tests Run: 4
+
+   Successful Tests: 2
+      Test addition
+      Test subtraction
+
+   Failed Assertions: 1
+
+      Test addition (failure expected)
+            Test should fail this assertion, as 5+3 /= 9
+            at math-test.adb:29
+
+   Unexpected Errors: 1
+
+      Test addition (error expected)
+            CONSTRAINT_ERROR
+
+Time: 2.902E-4 seconds
+</pre></div>
+</div>
+<p id="index-6">This reporter can optionally use colors (green to report success, red to report
+errors). Since not all consoles support it, this is off by default, but you can
+call <code class="docutils literal"><span class="pre">Set_Use_ANSI_Colors</span></code> to activate support for colors.</p>
+</div>
+<div class="section" id="xml-output">
+<span id="index-7"></span><h2>6.2. XML output<a class="headerlink" href="#xml-output" title="Permalink to this headline">¶</a></h2>
+<p>Following is the same harness run using XML output. The XML format used
+matches the one used by <span class="target" id="index-8"></span>CppUnit.</p>
+<p id="index-9">Note that text set in the <cite>Assert</cite> subprograms or as test case names should
+be compatible with utf-8 character encoding, or the XML will not be
+correctly formatted.</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;?xml version=&#39;1.0&#39; encoding=&#39;utf-8&#39; ?&gt;
+&lt;TestRun elapsed=&#39;1.107E-4&#39;&gt;
+  &lt;Statistics&gt;
+    &lt;Tests&gt;4&lt;/Tests&gt;
+    &lt;FailuresTotal&gt;2&lt;/FailuresTotal&gt;
+    &lt;Failures&gt;1&lt;/Failures&gt;
+    &lt;Errors&gt;1&lt;/Errors&gt;
+  &lt;/Statistics&gt;
+  &lt;SuccessfulTests&gt;
+    &lt;Test&gt;
+      &lt;Name&gt;Test addition&lt;/Name&gt;
+    &lt;/Test&gt;
+    &lt;Test&gt;
+      &lt;Name&gt;Test subtraction&lt;/Name&gt;
+    &lt;/Test&gt;
+  &lt;/SuccessfulTests&gt;
+  &lt;FailedTests&gt;
+    &lt;Test&gt;
+      &lt;Name&gt;Test addition (failure expected)&lt;/Name&gt;
+      &lt;FailureType&gt;Assertion&lt;/FailureType&gt;
+      &lt;Message&gt;Test should fail this assertion, as 5+3 /= 9&lt;/Message&gt;
+      &lt;Location&gt;
+        &lt;File&gt;math-test.adb&lt;/File&gt;
+        &lt;Line&gt;29&lt;/Line&gt;
+      &lt;/Location&gt;
+    &lt;/Test&gt;
+    &lt;Test&gt;
+      &lt;Name&gt;Test addition (error expected)&lt;/Name&gt;
+      &lt;FailureType&gt;Error&lt;/FailureType&gt;
+      &lt;Message&gt;CONSTRAINT_ERROR&lt;/Message&gt;
+    &lt;/Test&gt;
+  &lt;/FailedTests&gt;
+&lt;/TestRun&gt;
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="test_organization.html" title="7. Test Organization"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="suite.html" title="5. Suite"
+             >previous</a> |</li>
+        <li><a href="../aunit_cb.html">AUnit Cookbook 2017 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2008-2017, AdaCore.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
+    </div>
+  </body>
+</html>

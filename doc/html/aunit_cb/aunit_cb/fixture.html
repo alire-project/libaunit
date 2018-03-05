@@ -1,0 +1,223 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>4. Fixture &mdash; AUnit Cookbook 2017 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2017',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="AUnit Cookbook 2017 documentation" href="../aunit_cb.html" />
+    <link rel="next" title="5. Suite" href="suite.html" />
+    <link rel="prev" title="3. Test Case" href="test_case.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="suite.html" title="5. Suite"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="test_case.html" title="3. Test Case"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../aunit_cb.html">AUnit Cookbook 2017 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../aunit_cb.html">
+              <img class="logo" src="../_static/adacore_transparent.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="test_case.html"
+                        title="previous chapter">3. Test Case</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="suite.html"
+                        title="next chapter">5. Suite</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/aunit_cb/fixture.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="fixture">
+<span id="id1"></span><h1>4. Fixture<a class="headerlink" href="#fixture" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="index-0"></span><p id="index-1">Tests need to run against the background of a set of known entities.
+This set is called a <em>test fixture</em>. When you are
+writing tests you will often find that you spend more time writing
+code to set up the fixture than you do in actually testing values.</p>
+<p>You can make writing fixture code easier by sharing it.
+Often you will be able to use the same fixture for several different
+tests. Each case will send slightly different messages or parameters to the
+fixture and will check for different results.</p>
+<p>When you have a common fixture, here is what you do:</p>
+<ul>
+<li><p class="first">Create a <em>Test Case</em> package as in previous section.</p>
+</li>
+<li><p class="first">Declare variables or components for elements of the fixture either
+as part of the test case type or in the package body.</p>
+</li>
+<li><p class="first">According to the Test_Case type used, override its <code class="docutils literal"><span class="pre">Set_Up</span></code>
+and/or <code class="docutils literal"><span class="pre">Set_Up_Case</span></code> subprogram:</p>
+<ul class="simple" id="index-2">
+<li><code class="docutils literal"><span class="pre">AUnit.Simple_Test_Cases</span></code>: <code class="docutils literal"><span class="pre">Set_Up</span></code> is called before
+<code class="docutils literal"><span class="pre">Run_Test</span></code>.</li>
+</ul>
+<span class="target" id="index-3"></span><ul class="simple" id="index-4">
+<li><code class="docutils literal"><span class="pre">AUnit.Test_Cases</span></code>: <code class="docutils literal"><span class="pre">Set_Up</span></code> is called before each test
+routine while <code class="docutils literal"><span class="pre">Set_Up_Case</span></code> is called once before the routines are run.</li>
+</ul>
+<ul class="simple" id="index-5">
+<li><code class="docutils literal"><span class="pre">AUnit.Test_Fixtures</span></code>: <code class="docutils literal"><span class="pre">Set_Up</span></code> is called before each
+test case created using <code class="docutils literal"><span class="pre">Aunit.Test_Caller</span></code>.</li>
+</ul>
+</li>
+<li><p class="first">You can also override <code class="docutils literal"><span class="pre">Tear_Down</span></code> and/or
+<code class="docutils literal"><span class="pre">Tear_Down_Case</span></code> that are executed after the test is run.</p>
+</li>
+</ul>
+<p>For example, to write several test cases that want to work with
+different combinations of 12 Euros, 14 Euros, and 26 US Dollars, first
+create a fixture. The package spec is now:</p>
+<div class="highlight-ada"><div class="highlight"><pre><span class="kr">with</span><span class="p"> </span><span class="n">AUnit</span><span class="p">; </span><span class="kr">use</span><span class="nn"> AUnit</span><span class="p">;</span>
+<span class="k">package </span><span class="nf">Money_Tests</span> <span class="kr">is</span><span class="p"></span>
+   <span class="kr">use</span><span class="p"> </span><span class="n">Test_Results</span><span class="p">;</span>
+
+   <span class="kr">type</span><span class="p"> </span><span class="n">Money_Test</span> <span class="kr">is</span><span class="p"> </span><span class="kr">new</span><span class="p"> </span><span class="n">Test_Cases.Test_Case</span> <span class="kr">with</span><span class="p"> </span><span class="kr">null</span><span class="p"> </span><span class="kr">record</span><span class="p">;</span>
+
+   <span class="k">procedure </span><span class="nf">Register_Tests</span> <span class="o">(</span><span class="n">T</span><span class="o">:</span> <span class="kr">in</span><span class="p"> </span><span class="kr">out</span><span class="p"> </span><span class="n">Money_Test</span><span class="o">)</span><span class="p">;</span>
+   <span class="c">-- Register routines to be run</span>
+
+   <span class="k">function </span><span class="nf">Name</span> <span class="o">(</span><span class="n">T</span> <span class="o">:</span> <span class="n">Money_Test</span><span class="o">)</span> <span class="kr">return</span><span class="p"> </span><span class="n">Test_String</span><span class="p">;</span>
+   <span class="c">-- Provide name identifying the test case</span>
+
+   <span class="k">procedure </span><span class="nf">Set_Up</span> <span class="o">(</span><span class="n">T</span> <span class="o">:</span> <span class="kr">in</span><span class="p"> </span><span class="kr">out</span><span class="p"> </span><span class="n">Money_Test</span><span class="o">)</span><span class="p">;</span>
+   <span class="c">--  Set up performed before each test routine</span>
+
+   <span class="c">-- Test Routines:</span>
+   <span class="k">procedure </span><span class="nf">Test_Simple_Add</span> <span class="o">(</span><span class="n">T</span> <span class="o">:</span> <span class="kr">in</span><span class="p"> </span><span class="kr">out</span><span class="p"> </span><span class="n">Test_Cases.Test_Case</span><span class="na">&#39;Class</span><span class="o">)</span><span class="p">;</span>
+<span class="k">end </span><span class="nf">Money_Tests</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>The body becomes:</p>
+<div class="highlight-ada"><div class="highlight"><pre><span class="k">package body </span><span class="nf">Money_Tests</span> <span class="kr">is</span><span class="p"></span>
+   <span class="kr">use</span><span class="p"> </span><span class="n">Assertions</span><span class="p">;</span>
+
+   <span class="c">-- Fixture elements</span>
+
+   <span class="n">EU_12</span><span class="p">,</span> <span class="n">EU_14</span> <span class="o">:</span> <span class="n">Euro</span><span class="p">;</span>
+   <span class="n">US_26</span>        <span class="o">:</span> <span class="n">US_Dollar</span><span class="p">;</span>
+
+   <span class="c">-- Preparation performed before each routine</span>
+
+   <span class="k">procedure </span><span class="nf">Set_Up</span> <span class="o">(</span><span class="n">T</span><span class="o">:</span> <span class="kr">in</span><span class="p"> </span><span class="kr">out</span><span class="p"> </span><span class="n">Money_Test</span><span class="o">)</span> <span class="kr">is</span><span class="p"></span>
+   <span class="kr">begin</span><span class="p"></span>
+      <span class="n">EU_12</span> <span class="o">:=</span> <span class="mi">12</span><span class="p">;</span> <span class="n">EU_14</span> <span class="o">:=</span> <span class="mi">14</span><span class="p">;</span>
+      <span class="n">US_26</span> <span class="o">:=</span> <span class="mi">26</span><span class="p">;</span>
+   <span class="k">end </span><span class="nf">Set_Up</span><span class="p">;</span>
+
+   <span class="k">procedure </span><span class="nf">Test_Simple_Add</span> <span class="o">(</span><span class="n">T</span> <span class="o">:</span> <span class="kr">in</span><span class="p"> </span><span class="kr">out</span><span class="p"> </span><span class="n">Test_Cases.Test_Case</span><span class="na">&#39;Class</span><span class="o">)</span> <span class="kr">is</span><span class="p"></span>
+      <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">:</span> <span class="n">Some_Currency</span><span class="p">;</span>
+   <span class="kr">begin</span><span class="p"></span>
+      <span class="n">Assert</span> <span class="o">(</span><span class="n">EU_12</span> <span class="o">+</span> <span class="n">EU_14</span> <span class="o">/=</span> <span class="n">US_26</span><span class="p">,</span>
+              <span class="s">&quot;US and EU currencies not differentiated&quot;</span><span class="o">)</span><span class="p">;</span>
+   <span class="k">end </span><span class="nf">Test_Simple_Add</span><span class="p">;</span>
+
+   <span class="c">-- Register test routines to call</span>
+   <span class="k">procedure </span><span class="nf">Register_Tests</span> <span class="o">(</span><span class="n">T</span><span class="o">:</span> <span class="kr">in</span><span class="p"> </span><span class="kr">out</span><span class="p"> </span><span class="n">Money_Test</span><span class="o">)</span> <span class="kr">is</span><span class="p"></span>
+      <span class="kr">use</span><span class="p"> </span><span class="n">Test_Cases.Registration</span><span class="p">;</span>
+   <span class="kr">begin</span><span class="p"></span>
+      <span class="c">-- Repeat for each test routine:</span>
+      <span class="n">Register_Routine</span> <span class="o">(</span><span class="n">T</span><span class="p">,</span> <span class="n">Test_Simple_Add</span><span class="na">&#39;Access</span><span class="p">,</span> <span class="s">&quot;Test Addition&quot;</span><span class="o">)</span><span class="p">;</span>
+   <span class="k">end </span><span class="nf">Register_Tests</span><span class="p">;</span>
+
+   <span class="c">-- Identifier of test case</span>
+   <span class="k">function </span><span class="nf">Name</span> <span class="o">(</span><span class="n">T</span><span class="o">:</span> <span class="n">Money_Test</span><span class="o">)</span> <span class="kr">return</span><span class="p"> </span><span class="n">Test_String</span> <span class="kr">is</span><span class="p"></span>
+   <span class="kr">begin</span><span class="p"></span>
+      <span class="kr">return</span><span class="p"> </span><span class="n">Format</span> <span class="o">(</span><span class="s">&quot;Money Tests&quot;</span><span class="o">)</span><span class="p">;</span>
+   <span class="k">end </span><span class="nf">Name</span><span class="p">;</span>
+
+<span class="k">end </span><span class="nf">Money_Tests</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Once you have the fixture in place, you can write as many test
+routines as you like. Calls to <code class="docutils literal"><span class="pre">Set_Up</span></code> and <code class="docutils literal"><span class="pre">Tear_Down</span></code>
+bracket the invocation of each test routine.</p>
+<p>Once you have several test cases, organize them into a Suite.</p>
+<p id="index-6">You can find a compilable example of fixture set up using
+<code class="docutils literal"><span class="pre">AUnit.Test_Fixtures</span></code> in your AUnit installation directory:
+<code class="samp docutils literal"><em><span class="pre">&lt;aunit-root&gt;</span></em><span class="pre">/share/examples/aunit/test_fixture/</span></code>
+or from the AUnit source distribution
+<code class="samp docutils literal"><span class="pre">aunit-</span><em><span class="pre">&lt;version&gt;</span></em><span class="pre">-src/examples/test_fixture/</span></code>.</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="suite.html" title="5. Suite"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="test_case.html" title="3. Test Case"
+             >previous</a> |</li>
+        <li><a href="../aunit_cb.html">AUnit Cookbook 2017 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2008-2017, AdaCore.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
+    </div>
+  </body>
+</html>

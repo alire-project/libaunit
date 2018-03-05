@@ -1,0 +1,347 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>3. Test Case &mdash; AUnit Cookbook 2017 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2017',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="AUnit Cookbook 2017 documentation" href="../aunit_cb.html" />
+    <link rel="next" title="4. Fixture" href="fixture.html" />
+    <link rel="prev" title="2. Overview" href="overview.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="fixture.html" title="4. Fixture"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="overview.html" title="2. Overview"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../aunit_cb.html">AUnit Cookbook 2017 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../aunit_cb.html">
+              <img class="logo" src="../_static/adacore_transparent.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../aunit_cb.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">3. Test Case</a><ul>
+<li><a class="reference internal" href="#aunit-simple-test-cases">3.1. AUnit.Simple_Test_Cases</a></li>
+<li><a class="reference internal" href="#aunit-test-cases">3.2. AUnit.Test_Cases</a></li>
+<li><a class="reference internal" href="#aunit-test-caller">3.3. AUnit.Test_Caller</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="overview.html"
+                        title="previous chapter">2. Overview</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="fixture.html"
+                        title="next chapter">4. Fixture</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/aunit_cb/test_case.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="test-case">
+<span id="id1"></span><h1>3. Test Case<a class="headerlink" href="#test-case" title="Permalink to this headline">¶</a></h1>
+<p>In this chapter, we will introduce how to use the various forms of Test
+Cases. We will illustrate with a very simple test routine, which verifies
+that the sum of two Money values with the same currency unit is a value
+that is the sum of the two values:</p>
+<div class="highlight-ada"><div class="highlight"><pre><span class="kr">declare</span><span class="p"></span>
+  <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="o">:</span> <span class="n">Some_Currency</span><span class="p">;</span>
+<span class="kr">begin</span><span class="p"></span>
+  <span class="n">X</span> <span class="o">:=</span> <span class="mi">12</span><span class="p">;</span> <span class="n">Y</span> <span class="o">:=</span> <span class="mi">14</span><span class="p">;</span>
+  <span class="n">Assert</span> <span class="o">(</span><span class="n">X</span> <span class="o">+</span> <span class="n">Y</span> <span class="o">=</span> <span class="mi">26</span><span class="p">,</span> <span class="s">&quot;Addition is incorrect&quot;</span><span class="o">)</span><span class="p">;</span>
+<span class="kr">end</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>The following sections will show how to use this test method using the
+different test case types available in AUnit.</p>
+<div class="section" id="aunit-simple-test-cases">
+<span id="index-0"></span><span id="id2"></span><h2>3.1. AUnit.Simple_Test_Cases<a class="headerlink" href="#aunit-simple-test-cases" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">AUnit.Simple_Test_Cases.Test_Case</span></code> is the root type of all test
+cases. Although generally not meant to be used directly, it provides a
+simple and quick way to run a test.</p>
+<p>This tagged type has several methods that need to be defined, or may be
+overridden.</p>
+<ul id="index-1">
+<li><p class="first"><code class="docutils literal"><span class="pre">function</span> <span class="pre">Name</span> <span class="pre">(T</span> <span class="pre">:</span> <span class="pre">Test_Case)</span> <span class="pre">return</span> <span class="pre">Message_String</span> <span class="pre">is</span> <span class="pre">abstract</span></code>:</p>
+<p>This function returns the Test name. You can easily translate regular
+strings to <code class="docutils literal"><span class="pre">Message_String</span></code> using <code class="docutils literal"><span class="pre">AUnit.Format</span></code>. For example:</p>
+<div class="highlight-ada"><div class="highlight"><pre><span class="k">function </span><span class="nf">Name</span> <span class="o">(</span><span class="n">T</span> <span class="o">:</span> <span class="n">Money_Test</span><span class="o">)</span> <span class="kr">return</span><span class="p"> </span><span class="n">Message_String</span> <span class="kr">is</span><span class="p"></span>
+<span class="kr">begin</span><span class="p"></span>
+  <span class="kr">return</span><span class="p"> </span><span class="n">Format</span> <span class="o">(</span><span class="s">&quot;Money Tests&quot;</span><span class="o">)</span><span class="p">;</span>
+<span class="k">end </span><span class="nf">Name</span><span class="p">;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<ul id="index-2">
+<li><p class="first"><code class="docutils literal"><span class="pre">procedure</span> <span class="pre">Run_Test</span> <span class="pre">(T</span> <span class="pre">:</span> <span class="pre">in</span> <span class="pre">out</span> <span class="pre">Test_Case)</span> <span class="pre">is</span> <span class="pre">abstract</span></code>:</p>
+<p>This procedure contains the test code. For example:</p>
+<div class="highlight-ada"><div class="highlight"><pre><span class="k">procedure </span><span class="nf">Run_Test</span> <span class="o">(</span><span class="n">T</span> <span class="o">:</span> <span class="kr">in</span><span class="p"> </span><span class="kr">out</span><span class="p"> </span><span class="n">Money_Test</span><span class="o">)</span> <span class="kr">is</span><span class="p"></span>
+  <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="o">:</span> <span class="n">Some_Currency</span><span class="p">;</span>
+<span class="kr">begin</span><span class="p"></span>
+  <span class="n">X</span> <span class="o">:=</span> <span class="mi">12</span><span class="p">;</span> <span class="n">Y</span> <span class="o">:=</span> <span class="mi">14</span><span class="p">;</span>
+  <span class="n">Assert</span> <span class="o">(</span><span class="n">X</span> <span class="o">+</span> <span class="n">Y</span> <span class="o">=</span> <span class="mi">26</span><span class="p">,</span> <span class="s">&quot;Addition is incorrect&quot;</span><span class="o">)</span><span class="p">;</span>
+<span class="k">end </span><span class="nf">Run_Test</span><span class="p">;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<ul id="index-3">
+<li><p class="first"><code class="docutils literal"><span class="pre">procedure</span> <span class="pre">Set_Up</span> <span class="pre">(T</span> <span class="pre">:</span> <span class="pre">in</span> <span class="pre">out</span> <span class="pre">Test_Case);</span></code> and <code class="docutils literal"><span class="pre">procedure</span> <span class="pre">Tear_Down</span> <span class="pre">(T</span> <span class="pre">:</span> <span class="pre">in</span> <span class="pre">out</span> <span class="pre">Test_Case);</span></code>
+(default implementations do nothing):</p>
+<p>These procedures are meant to respectively set up or tear down the
+environment before running the test case. See <a class="reference internal" href="fixture.html#fixture"><em>Fixture</em></a> for examples
+of how to use these methods.</p>
+</li>
+</ul>
+<p>You can find a compilable example of
+<code class="docutils literal"><span class="pre">AUnit.Simple_Test_Cases.Test_Case</span></code> usage in your AUnit installation
+directory: <code class="samp docutils literal"><em><span class="pre">&lt;aunit-root&gt;</span></em><span class="pre">/share/examples/aunit/simple_test/</span></code> or from the
+source distribution <code class="samp docutils literal"><span class="pre">aunit-</span><em><span class="pre">&lt;version&gt;</span></em><span class="pre">-src/examples/simple_test/</span></code>.</p>
+</div>
+<div class="section" id="aunit-test-cases">
+<span id="id3"></span><h2>3.2. AUnit.Test_Cases<a class="headerlink" href="#aunit-test-cases" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">AUnit.Test_Cases.Test_Case</span></code> is derived from
+<code class="docutils literal"><span class="pre">AUnit.Simple_Test_Cases.Test_Case</span></code> and defines its
+<code class="docutils literal"><span class="pre">Run_Test</span></code> procedure.</p>
+<p>It allows a very flexible composition of Test routines inside a single
+test case, each being reported independently.</p>
+<p>The following subprograms must be considered for inheritance, overriding or
+completion:</p>
+<ul id="index-4">
+<li><p class="first"><code class="docutils literal"><span class="pre">function</span> <span class="pre">Name</span> <span class="pre">(T</span> <span class="pre">:</span> <span class="pre">Test_Case)</span> <span class="pre">return</span> <span class="pre">Message_String</span> <span class="pre">is</span> <span class="pre">abstract;</span></code></p>
+<p>Inherited. See <a class="reference internal" href="#aunit-simple-test-cases"><em>AUnit.Simple_Test_Cases</em></a>.</p>
+</li>
+</ul>
+<span class="target" id="index-5"></span><ul id="index-6">
+<li><div class="first line-block">
+<div class="line"><code class="docutils literal"><span class="pre">procedure</span> <span class="pre">Set_Up</span> <span class="pre">(T</span> <span class="pre">:</span> <span class="pre">in</span> <span class="pre">out</span> <span class="pre">Test_Case);</span></code></div>
+<div class="line"><code class="docutils literal"><span class="pre">procedure</span> <span class="pre">Tear_Down</span> <span class="pre">(T</span> <span class="pre">:</span> <span class="pre">in</span> <span class="pre">out</span> <span class="pre">Test_Case);</span></code></div>
+</div>
+<p>Inherited. See <a class="reference internal" href="#aunit-simple-test-cases"><em>AUnit.Simple_Test_Cases</em></a>.</p>
+</li>
+</ul>
+<span class="target" id="index-7"></span><ul id="index-8">
+<li><div class="first line-block">
+<div class="line"><code class="docutils literal"><span class="pre">procedure</span> <span class="pre">Set_Up_Case</span> <span class="pre">(T</span> <span class="pre">:</span> <span class="pre">in</span> <span class="pre">out</span> <span class="pre">Test_Case);</span></code></div>
+<div class="line"><code class="docutils literal"><span class="pre">procedure</span> <span class="pre">Tear_Down_Case</span> <span class="pre">(T</span> <span class="pre">:</span> <span class="pre">in</span> <span class="pre">out</span> <span class="pre">Test_Case);</span></code></div>
+</div>
+<p>Default implementation does nothing.</p>
+<p>These last two procedures provide an opportunity to set up and tear down the test
+case before and after all test routines have been executed. In contrast, the
+inherited <code class="docutils literal"><span class="pre">Set_Up</span></code> and <code class="docutils literal"><span class="pre">Tear_Down</span></code> are called before and after the
+execution of each individual test routine.</p>
+</li>
+</ul>
+<ul id="index-9">
+<li><p class="first"><code class="docutils literal"><span class="pre">procedure</span> <span class="pre">Register_Tests</span> <span class="pre">(T</span> <span class="pre">:</span> <span class="pre">in</span> <span class="pre">out</span> <span class="pre">Test_Case)</span> <span class="pre">is</span> <span class="pre">abstract;</span></code></p>
+<span class="target" id="index-10"></span><p id="index-11">This procedure must be overridden. It is responsible for registering all
+the test routines that will be run. You need to use either
+<code class="docutils literal"><span class="pre">Registration.Register_Routine</span></code> or the generic
+<code class="docutils literal"><span class="pre">Specific_Test_Case.Register_Wrapper</span></code> subprograms defined in
+<code class="docutils literal"><span class="pre">AUnit.Test_Cases</span></code> to register a routine. A test routine has the
+form:</p>
+<div class="highlight-ada"><div class="highlight"><pre><span class="k">procedure </span><span class="nf">Test_Routine</span> <span class="o">(</span><span class="n">T</span> <span class="o">:</span> <span class="kr">in</span><span class="p"> </span><span class="kr">out</span><span class="p"> </span><span class="n">Test_Case</span><span class="na">&#39;Class</span><span class="o">)</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>or</p>
+<div class="highlight-ada"><div class="highlight"><pre><span class="k">procedure </span><span class="nf">Test_Wrapper</span> <span class="o">(</span><span class="n">T</span> <span class="o">:</span> <span class="kr">in</span><span class="p"> </span><span class="kr">out</span><span class="p"> </span><span class="n">Specific_Test_Case</span><span class="na">&#39;Class</span><span class="o">)</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>The former procedure is used mainly for dispatching calls
+(see <a class="reference internal" href="test_organization.html#oop-considerations"><em>OOP considerations</em></a>).</p>
+</li>
+</ul>
+<p>Using this type to test our money addition, the package spec is:</p>
+<div class="highlight-ada"><div class="highlight"><pre><span class="kr">with</span><span class="p"> </span><span class="n">AUnit</span><span class="p">; </span><span class="kr">use</span><span class="nn"> AUnit</span><span class="p">;</span>
+<span class="kr">with</span><span class="nn"> AUnit.Test_Cases</span><span class="p">; </span><span class="kr">use</span><span class="nn"> AUnit.Test_Cases</span><span class="p">;</span>
+
+<span class="k">package </span><span class="nf">Money_Tests</span> <span class="kr">is</span><span class="p"></span>
+
+  <span class="kr">type</span><span class="p"> </span><span class="n">Money_Test</span> <span class="kr">is</span><span class="p"> </span><span class="kr">new</span><span class="p"> </span><span class="n">Test_Cases.Test_Case</span> <span class="kr">with</span><span class="p"> </span><span class="kr">null</span><span class="p"> </span><span class="kr">record</span><span class="p">;</span>
+
+  <span class="k">procedure </span><span class="nf">Register_Tests</span> <span class="o">(</span><span class="n">T</span><span class="o">:</span> <span class="kr">in</span><span class="p"> </span><span class="kr">out</span><span class="p"> </span><span class="n">Money_Test</span><span class="o">)</span><span class="p">;</span>
+  <span class="c">-- Register routines to be run</span>
+
+  <span class="k">function </span><span class="nf">Name</span> <span class="o">(</span><span class="n">T</span><span class="o">:</span> <span class="n">Money_Test</span><span class="o">)</span> <span class="kr">return</span><span class="p"> </span><span class="n">Message_String</span><span class="p">;</span>
+  <span class="c">-- Provide name identifying the test case</span>
+
+  <span class="c">-- Test Routines:</span>
+  <span class="k">procedure </span><span class="nf">Test_Simple_Add</span> <span class="o">(</span><span class="n">T</span> <span class="o">:</span> <span class="kr">in</span><span class="p"> </span><span class="kr">out</span><span class="p"> </span><span class="n">Test_Cases.Test_Case</span><span class="na">&#39;Class</span><span class="o">)</span><span class="p">;</span>
+<span class="k">end </span><span class="nf">Money_Tests</span>
+</pre></div>
+</div>
+<p>The package body is:</p>
+<div class="highlight-ada"><div class="highlight"><pre><span class="kr">with</span><span class="p"> </span><span class="n">AUnit.Assertions</span><span class="p">; </span><span class="kr">use</span><span class="nn"> AUnit.Assertions</span><span class="p">;</span>
+
+<span class="k">package body </span><span class="nf">Money_Tests</span> <span class="kr">is</span><span class="p"></span>
+
+   <span class="k">procedure </span><span class="nf">Test_Simple_Add</span> <span class="o">(</span><span class="n">T</span> <span class="o">:</span> <span class="kr">in</span><span class="p"> </span><span class="kr">out</span><span class="p"> </span><span class="n">Test_Cases.Test_Case</span><span class="na">&#39;Class</span><span class="o">)</span> <span class="kr">is</span><span class="p"></span>
+      <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">:</span> <span class="n">Some_Currency</span><span class="p">;</span>
+   <span class="kr">begin</span><span class="p"></span>
+      <span class="n">X</span> <span class="o">:=</span> <span class="mi">12</span><span class="p">;</span> <span class="n">Y</span> <span class="o">:=</span> <span class="mi">14</span><span class="p">;</span>
+      <span class="n">Assert</span> <span class="o">(</span><span class="n">X</span> <span class="o">+</span> <span class="n">Y</span> <span class="o">=</span> <span class="mi">26</span><span class="p">,</span> <span class="s">&quot;Addition is incorrect&quot;</span><span class="o">)</span><span class="p">;</span>
+   <span class="k">end </span><span class="nf">Test_Simple_Add</span><span class="p">;</span>
+
+   <span class="c">-- Register test routines to call</span>
+   <span class="k">procedure </span><span class="nf">Register_Tests</span> <span class="o">(</span><span class="n">T</span><span class="o">:</span> <span class="kr">in</span><span class="p"> </span><span class="kr">out</span><span class="p"> </span><span class="n">Money_Test</span><span class="o">)</span> <span class="kr">is</span><span class="p"></span>
+      <span class="kr">use</span><span class="p"> </span><span class="n">AUnit.Test_Cases.Registration</span><span class="p">;</span>
+   <span class="kr">begin</span><span class="p"></span>
+      <span class="c">-- Repeat for each test routine:</span>
+      <span class="n">Register_Routine</span> <span class="o">(</span><span class="n">T</span><span class="p">,</span> <span class="n">Test_Simple_Add</span><span class="na">&#39;Access</span><span class="p">,</span> <span class="s">&quot;Test Addition&quot;</span><span class="o">)</span><span class="p">;</span>
+   <span class="k">end </span><span class="nf">Register_Tests</span><span class="p">;</span>
+
+   <span class="c">-- Identifier of test case</span>
+
+   <span class="k">function </span><span class="nf">Name</span> <span class="o">(</span><span class="n">T</span><span class="o">:</span> <span class="n">Money_Test</span><span class="o">)</span> <span class="kr">return</span><span class="p"> </span><span class="n">Test_String</span> <span class="kr">is</span><span class="p"></span>
+   <span class="kr">begin</span><span class="p"></span>
+      <span class="kr">return</span><span class="p"> </span><span class="n">Format</span> <span class="o">(</span><span class="s">&quot;Money Tests&quot;</span><span class="o">)</span><span class="p">;</span>
+   <span class="k">end </span><span class="nf">Name</span><span class="p">;</span>
+
+<span class="k">end </span><span class="nf">Money_Tests</span><span class="p">;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="aunit-test-caller">
+<span id="index-12"></span><span id="id4"></span><h2>3.3. AUnit.Test_Caller<a class="headerlink" href="#aunit-test-caller" title="Permalink to this headline">¶</a></h2>
+<p id="index-13"><code class="docutils literal"><span class="pre">Test_Caller</span></code> is a generic package that is used with
+<code class="docutils literal"><span class="pre">AUnit.Test_Fixtures.Test_Fixture</span></code>. <code class="docutils literal"><span class="pre">Test_Fixture</span></code> is a very
+simple type that provides only the <code class="docutils literal"><span class="pre">Set_Up</span></code> and <code class="docutils literal"><span class="pre">Tear_Down</span></code>
+procedures. This type is meant to contain a set of user-defined test
+routines, all using the same set up and tear down mechanisms. Once those
+routines are defined, the <code class="docutils literal"><span class="pre">Test_Caller</span></code> package is used to incorporate them
+directly into a test suite.</p>
+<p>With our money example, the <code class="docutils literal"><span class="pre">Test_Fixture</span></code> is:</p>
+<div class="highlight-ada"><div class="highlight"><pre><span class="kr">with</span><span class="p"> </span><span class="n">AUnit.Test_Fixtures</span><span class="p">;</span>
+<span class="k">package </span><span class="nf">Money_Tests</span> <span class="kr">is</span><span class="p"></span>
+   <span class="kr">type</span><span class="p"> </span><span class="n">Money_Test</span> <span class="kr">is</span><span class="p"> </span><span class="kr">new</span><span class="p"> </span><span class="n">AUnit.Test_Fixtures.Test_Fixture</span> <span class="kr">with</span><span class="p"> </span><span class="kr">null</span><span class="p"> </span><span class="kr">record</span><span class="p">;</span>
+
+   <span class="k">procedure </span><span class="nf">Test_Simple_Add</span> <span class="o">(</span><span class="n">T</span> <span class="o">:</span> <span class="kr">in</span><span class="p"> </span><span class="kr">out</span><span class="p"> </span><span class="n">Money_Test</span><span class="o">)</span><span class="p">;</span>
+
+<span class="k">end </span><span class="nf">Money_Tests</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>The test suite (see <a class="reference internal" href="suite.html#suite"><em>Suite</em></a>) calling the test cases created from
+this Test_Fixture is:</p>
+<div class="highlight-ada"><div class="highlight"><pre><span class="kr">with</span><span class="p"> </span><span class="n">AUnit.Test_Suites</span><span class="p">;</span>
+<span class="k">package </span><span class="nf">Money_Suite</span> <span class="kr">is</span><span class="p"></span>
+   <span class="k">function </span><span class="nf">Suite</span> <span class="kr">return</span><span class="p"> </span><span class="n">AUnit.Test_Suites.Access_Test_Suite</span><span class="p">;</span>
+<span class="k">end </span><span class="nf">Money_Suite</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Here is the corresponding body:</p>
+<div class="highlight-ada"><div class="highlight"><pre><span class="kr">with</span><span class="p"> </span><span class="n">AUnit.Test_Caller</span><span class="p">;</span>
+<span class="kr">with</span><span class="nn"> Money_Tests</span><span class="p">;</span>
+
+<span class="k">package body </span><span class="nf">Money_Suite</span> <span class="kr">is</span><span class="p"></span>
+
+   <span class="k">package </span><span class="nf">Money_Caller</span> <span class="kr">is</span><span class="p"> </span><span class="kr">new</span><span class="p"> </span><span class="n">AUnit.Test_Caller</span>
+      <span class="o">(</span><span class="n">Money_Tests.Money_Test</span><span class="o">)</span><span class="p">;</span>
+
+   <span class="k">function </span><span class="nf">Suite</span> <span class="kr">return</span><span class="p"> </span><span class="n">Aunit.Test_Suites.Access_Test_Suite</span> <span class="kr">is</span><span class="p"></span>
+      <span class="n">Ret</span> <span class="o">:</span> <span class="n">AUnit.Test_Suites.Access_Test_Suite</span> <span class="o">:=</span>
+      <span class="n">AUnit.Test_Suites.New_Suite</span><span class="p">;</span>
+   <span class="kr">begin</span><span class="p"></span>
+      <span class="n">Ret.Add_Test</span>
+         <span class="o">(</span><span class="n">Money_Caller.Create</span>
+            <span class="o">(</span><span class="s">&quot;Money Test : Test Addition&quot;</span><span class="p">,</span>
+              <span class="n">Money_Tests.Test_Simple_Add</span><span class="na">&#39;Access</span><span class="o">))</span><span class="p">;</span>
+      <span class="kr">return</span><span class="p"> </span><span class="n">Ret</span><span class="p">;</span>
+   <span class="k">end </span><span class="nf">Suite</span><span class="p">;</span>
+
+<span class="k">end </span><span class="nf">Money_Suite</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Note that <code class="docutils literal"><span class="pre">New_Suite</span></code> and <code class="docutils literal"><span class="pre">Create</span></code> are fully compatible with
+limited run-time libraries (in particular, those without dynamic allocation support).
+However, for non-native run-time libraries, you cannot extend
+<code class="docutils literal"><span class="pre">Test_Fixture</span></code> with a controlled component.</p>
+<p>You can find a compilable example of
+<code class="docutils literal"><span class="pre">AUnit.Test_Caller</span></code> usage in the AUnit installation
+directory: <code class="samp docutils literal"><em><span class="pre">&lt;aunit-root&gt;</span></em><span class="pre">/share/examples/aunit/test_caller/</span></code> or from the
+source distribution <code class="samp docutils literal"><span class="pre">aunit-</span><em><span class="pre">&lt;version&gt;</span></em><span class="pre">-src/examples/test_caller/</span></code>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="fixture.html" title="4. Fixture"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="overview.html" title="2. Overview"
+             >previous</a> |</li>
+        <li><a href="../aunit_cb.html">AUnit Cookbook 2017 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2008-2017, AdaCore.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
+    </div>
+  </body>
+</html>
