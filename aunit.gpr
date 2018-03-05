@@ -7,16 +7,16 @@ project AUnit is
    Mode : Compilation_Mode_Type := external ("MODE", "Install");
 
    for Source_Dirs use
-     ("../../include/aunit/framework",
-      "../../include/aunit/containers",
-      "../../include/aunit/reporters",
-      "../../include/aunit/framework/" & AUnit_Shared.Except,
-      "../../include/aunit/framework/" & AUnit_Shared.Calend,
-      "../../include/aunit/framework/" & AUnit_Shared.Memory);
+     ("include/aunit/framework",
+      "include/aunit/containers",
+      "include/aunit/reporters",
+      "include/aunit/framework/" & AUnit_Shared.Except,
+      "include/aunit/framework/" & AUnit_Shared.Calend,
+      "include/aunit/framework/" & AUnit_Shared.Memory);
 
    for Library_Dir use AUnit_Shared.Library_Dir;
 
-   Obj_Dir := external ("OBJDIR", "../aunit-obj/"
+   Obj_Dir := external ("OBJDIR", "aunit-obj/"
                         & AUnit_Shared.Target & "-" & AUnit_Shared.Runtime);
    for Object_Dir use Obj_Dir;
 
@@ -49,16 +49,16 @@ project AUnit is
 
    package Install is
       for Artifacts ("share/doc/aunit/pdf")
-        use ("../../doc/pdf/**");
+        use ("doc/pdf/**");
       for Artifacts ("share/doc/aunit/txt")
-        use ("../../doc/txt/**");
+        use ("doc/txt/**");
       for Artifacts ("share/doc/aunit/info")
-        use ("../../doc/info/**");
+        use ("doc/info/**");
       for Artifacts ("share/doc/aunit/html")
-        use ("../../doc/html/**");
+        use ("doc/html/**");
 
-      for Artifacts ("share/gps/plug-ins") use ("../../support/aunit.xml");
-      for Artifacts ("share/examples/aunit") use ("../../examples/*");
+      for Artifacts ("share/gps/plug-ins") use ("support/aunit.xml");
+      for Artifacts ("share/examples/aunit") use ("examples/*");
    end Install;
 
 end AUnit;
